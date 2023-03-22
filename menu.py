@@ -88,14 +88,19 @@ def print_menu(title, options, col = 1, cursor = "🢧 "):
         
 # Function main for testing porpuses
 def main():
-    options = ["Open",
-             "Create",
-             "Delete",
-             "Restore",
-             "Comment"]
-    lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    options = [
+             "Poodle",
+             "Chihuaha",
+             "Golden",
+             "Dalmata",
+             "Galgo",
+             "German Shepard",
+             "Border Collie",
+             "Corgie",
+             "Mine"]
     choice = print_menu("Title", options)
     choice = print_menu("Title", options, col=3)
+    choice = print_menu("Best Dog", options, col=4, cursor=">===>>")
     print(f"Your choice was {choice}")
     
 if __name__ == "__main__":
