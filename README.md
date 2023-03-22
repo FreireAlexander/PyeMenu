@@ -2,6 +2,6 @@
 
 ## Don´t forget to install requierements.txt via pip install as follow
 
-´´´python
+```python
 pip install -r requirements.txt
-´´´
+```
