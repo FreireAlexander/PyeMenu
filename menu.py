@@ -1,11 +1,9 @@
 #Libraries
 import os
-import readchar
-from readchar import key
-import old_menus as table_menus
+from readchar import key, readkey
 
-
-# Global Variables
+## Global Variables
+# Keyboard Values
 ENTER = key.ENTER
 UP = key.UP
 DOWN = key.DOWN
@@ -23,7 +21,7 @@ def clear():
 def input_key():
     print(f"\n\n Press ENTER to select an option")
     print(f" Press (q) to exit")
-    return readchar.readkey()
+    return readkey()
 
 # Validate type of parameters
 def validate_options(options):
@@ -56,37 +54,37 @@ def cursor_position(key, position, col):
 
     return position
 
-# Print title for table menu in CLI
+# Print title for menu in CLI
 def print_title(title, options, col, cursor):
     max_len_string = len(max(options, key=len))
     len_title_frame = ((len(cursor) + max_len_string + 1)*col - len(title))//2
     print(f"{len_title_frame*'_'} "+f"{title}"+f" {len_title_frame*'_'}")
 
-# Print menu as table in CLI
-def menu_list(title, options, col = 1, cursor = "🢧 "):
-    options = validate_options(options)
+# Print options for menu in CLI
+def print_options(options, col, position, cursor):
     max_len_option = len(max(options, key = len))
+    for option in options:
+        if options.index(option) % col == 0:
+            print("")
+        if position == options.index(option):
+            print(f" {cursor} {option}"+f"{(max_len_option-len(option))*' '}", end="")
+        else:
+            print(f" {' '*(len(cursor)+1)}"+f"{option}"+f"{(max_len_option-len(option))*' '}", end="")
+
+# Print interactive menu in CLI
+def print_menu(title, options, col = 1, cursor = "🢧 "):
+    options = validate_options(options)
     position = 0
     while True:
         clear()
         print_title(title, options, col, cursor)
-        for option in options:
-            if options.index(option) % col == 0:
-                print("")
-            if position == options.index(option):
-                print(f" {cursor} {option}"+f"{(max_len_option-len(option))*' '}", end="")
-            else:
-                print(f" {' '*(len(cursor)+1)}"+f"{option}"+f"{(max_len_option-len(option))*' '}", end="")
-
+        print_options(options, col, position, cursor)
         key = input_key()
         position = validate_position(cursor_position(key, position, col), options)
-
         if key in ["q", "Q"]:
             return -1
         if key == ENTER:
             return options[position]
-
-    return
         
 # Function main for testing porpuses
 def main():
@@ -96,8 +94,8 @@ def main():
              "Restore",
              "Comment"]
     lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    choice = menu_list("Title", options)
-    choice = menu_list("Title", options, col=3)
+    choice = print_menu("Title", options)
+    choice = print_menu("Title", options, col=3)
     print(f"Your choice was {choice}")
     
 if __name__ == "__main__":
