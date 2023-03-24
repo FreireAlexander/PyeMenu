@@ -3,7 +3,7 @@ import menu
 
 # Function main for testing porpuses
 def main():
-    menu.menu()
+    return
 
 if __name__ == "__main__":
     main()
