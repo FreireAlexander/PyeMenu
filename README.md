@@ -1,4 +1,6 @@
-# Python Module for CLI interactives menus
+# PyeMenu V 0.1 
+
+PyeMenu is a simple and interactive CLI menu for Python apps __'by now'__ It is intend in future to add more features including other types of menus as checkbox an similars. Right now, it is possible to customize the title and the cursor __'icon'__ 
 
 ## Installing
 For installing this module you can download this repo as .zip file and unzip where You need it
