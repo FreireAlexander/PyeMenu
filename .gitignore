@@ -251,4 +251,6 @@ $RECYCLE.BIN/
 
 # Ignore personal types of files
 .vscode
+tests/
+
 

@@ -1,6 +1,12 @@
 [![GitHub Repository](https://img.shields.io/badge/-GitHub-%230D0D0D?logo=github&labelColor=gray)](https://github.com/FreireAlexander/PyeMenu)
+[![Latest PyPi version](https://img.shields.io/pypi/v/pyemenu.svg)](https://pypi.python.org/pypi/pyemenu)<br>
+[![supported Python versions](https://img.shields.io/pypi/pyversions/pyemenu)](https://pypi.python.org/pypi/pyemenu)
+[![Project licence](https://img.shields.io/pypi/l/pyemenu?color=blue)](LICENCE) <br>
+[![Number of PyPi downloads](https://img.shields.io/pypi/dd/pyemenu.svg)](https://pypi.python.org/pypi/pyemenu)
 
-# Python - PyeMenu Version 0.0.1
+
+
+# Python - PyeMenu Version 0.1.0
 
 PyeMenu is a simple and interactive CLI menu for Python apps __'by now'__ It is intend in future to add more features including other types of menus as checkbox an similars. Right now, it is possible to customize the title and the cursor __'icon'__ 
 
@@ -46,7 +52,7 @@ options = [
     choice = pyemenu.menu("My App", options, col=1)
     print(f"Your choice was {choice}")
 # function print_menu return the choice selected pressing ENTER 
-choice = pymenu.menu("Title", options)
+choice = pyemenu.menu("Title", options)
 print(f"\n Your choice was {choice}")
 ```
 
@@ -84,7 +90,7 @@ print(f"Your choice was {choice}")
 Even it is possible to change the chars that build the cursor. For example, so if you have a cool font installed you can use a cool shape for your cursor.
 
 ```python
-import menu
+import pyemenu
 
 # Options for an app running in the CLI
 options = [
@@ -102,8 +108,6 @@ print(f"Your choice was {choice}")
 
 <p></p>
 
-
-## Documentation
 
 ## OS Support
 Right now it only been tested on Windows Os and Linux Os

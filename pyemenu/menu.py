@@ -113,4 +113,3 @@ def menu(title: str, options: list, col: int = 1, cursor: str = "=>"):
             return None 
         if key == ENTER:
             return options[position]
-
