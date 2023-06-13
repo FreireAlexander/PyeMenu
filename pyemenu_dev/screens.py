@@ -1,29 +1,3 @@
-import pyemenu
-from readchar import key, readkey, readchar
-import functools
-
-## Global Variables
-# Keyboard Values
-
-ENTER = key.ENTER
-UP = key.UP
-DOWN = key.DOWN
-LEFT = key.LEFT
-RIGHT = key.RIGHT
-SPACE = key.SPACE
-FORWARD = key.TAB
-BACKWARD = key.SHIFT_TAB
-
-'''
-UP = 'i'
-DOWN = 'k'
-LEFT = 'j'
-RIGHT = 'l'
-SPACE = 'o'
-FORWARD = '>'
-BACKWARD = '<'
-'''
-
 def move_position(key, array, row, col):
     if key == UP:
         col -= array
@@ -46,7 +20,7 @@ def move_position(key, array, row, col):
     return row, col
 
 
-def main():
+def print_screen():
     matrix = [
         [1,2,3,4,5]
     ]
@@ -101,7 +75,3 @@ def main():
             print("hacia atrás")
     
     #pyemenu.menu('Cool', matrix)
-
-
-if __name__ == '__main__':
-    main()
