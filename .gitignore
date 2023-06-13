@@ -252,5 +252,6 @@ $RECYCLE.BIN/
 # Ignore personal types of files
 .vscode
 tests/
+pyemenu_dev/
 
 
