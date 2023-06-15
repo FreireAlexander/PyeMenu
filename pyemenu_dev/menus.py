@@ -12,6 +12,21 @@ import os
 from readchar import key, readkey
 # Local Libraries
 from .tools import *
+from .texts import Text
+from .titles import Title
+
+class menu():
+    '''
+    This class allow to create an simple option list for selecting
+    one option from a list of options
+    '''
+    def __init__(self, options: list,
+                 title: str = '',
+
+                 ):
+        self.options = options
+        self.title = title
+
 
 # Print title for menu in CLI
 def print_title(title, sep='-', position='center',  cursor='-->', options=[], col=1):

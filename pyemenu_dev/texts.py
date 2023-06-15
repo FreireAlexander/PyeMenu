@@ -7,10 +7,11 @@ class Text():
     This class allow you to format text, some formats and effects are not available
     in some terminal emulators as Kitty, Alacritty, etc...
     properties:
-        text: str 
-        optionals
-        text_color: str 
-        background_color: 
+        text: str
+    ***** optionals *****    
+        text_color: str # in html format, much color colud be found in Color() Class
+        background_color: str # in html format, much color colud be found in Color() Class
+    ***** Text Style *****
         bold: bool 
         italic: bool 
         underline: bool 
@@ -38,6 +39,7 @@ class Text():
         self.underline = underline
         self.reverse = reverse
         self.crossed = crossed
+        self.lenght = len(self.text)
         self.formatted = self.text
         if self.bold:
             self.formatted = f"\x1b[1m" + self.formatted

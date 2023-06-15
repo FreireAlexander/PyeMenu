@@ -12,12 +12,12 @@ from readchar import key, readkey
 
 ## Global Variables
 # Keyboard Values
-ENTER = key.ENTER
-UP = key.UP
-DOWN = key.DOWN
-LEFT = key.LEFT
-RIGHT = key.RIGHT
-SPACE = key.SPACE
+ENTER   = key.ENTER
+UP      = key.UP
+DOWN    = key.DOWN
+LEFT    = key.LEFT
+RIGHT   = key.RIGHT
+SPACE   = key.SPACE
 
 # Os.clear functions
 def clear():
