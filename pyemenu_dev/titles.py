@@ -36,6 +36,8 @@ class Title(Text):
         self.tilte_text = ' '+text+' '
         self.lenght = len(self.tilte_text)
         self.formatted = self.tilte_text
+        self._fg = fg
+        self._bg = bg
         if self.bold:
             self.formatted = f"\x1b[1m" + self.formatted
         if self.italic:
@@ -62,8 +64,8 @@ class Title(Text):
     def print_title(self, align: str = 'center',
                 decorator: str = '',
                 width: int = 0,
-                new_line_up: bool = False,
-                new_line_bottom: bool = False):
+                padding_up: bool = False,
+                padding_bottom: bool = False):
         """
         This Methods print the Title, it is possible to 
         specifies:
@@ -73,6 +75,14 @@ class Title(Text):
         new_line_up: bool = False -> add a new line above title
         new_line_bottom: bool = False -> add a new line behind title
         """
+        if type(decorator) != type(Text('')):
+            decorator = Text(str(decorator), fg=self._fg, bg=self._bg)
+        if type(decorator) == type(Text('')) and decorator._bg == not_bg and decorator._fg != not_fg:
+            decorator = Text(decorator.text, bg=self._bg, fg=decorator._fg)
+        if type(decorator) == type(Text('')) and decorator._fg == not_fg and decorator._bg != not_bg:
+            decorator = Text(decorator.text, fg=self._fg, bg=decorator._bg)
+        if type(decorator) == type(Text('')) and decorator._fg == not_fg and decorator._bg == not_bg:
+            decorator = Text(decorator.text, fg=self._fg, bg=self._bg)
         spaces = (width-self.lenght)
         if type(decorator)==type('str'):
             if align == 'center':
@@ -95,14 +105,14 @@ class Title(Text):
             if align == 'left':
                 title_text = f"{self.formatted}"+f"{spaces*decorator.formatted}"
         
-        if new_line_up and new_line_bottom:
+        if padding_up and padding_bottom:
             print(f"{self.bg}{width*' '}")
             print(f"{title_text}")
             print(f"{self.bg}{width*' '}", end='')
-        elif new_line_up:
+        elif padding_up:
             print(f"{self.bg}{width*' '}")
             print(f"{title_text}", end='')
-        elif new_line_bottom:
+        elif padding_bottom:
             print(f"{title_text}")
             print(f"{self.bg}{width*' '}", end='')
         else: print(title_text, end='')

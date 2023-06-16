@@ -6,25 +6,25 @@ from readchar import key
 def main():
     foreground = Colors.BlueViolet
     background = Colors.AntiqueWhite
-    Perro1 = Text('French Poodle', fg=foreground, bg=background)
-    Perro2 = Text('Chihuaha', fg=foreground, bg=background)
-    Perro3 = Text('Dalmata', fg=foreground, bg=background)
-    Perro4 = Text('Golden Retriever', fg=foreground, bg=background)
-    Perro5 = Text('Labrador', fg=foreground, bg=background)
-    Perro6 = Text('Pastor Alemán', fg=foreground, bg=background)
-    Perro7 = Text('Akita', fg=foreground, bg=background)
-    Perro8 = Text('Galgo', fg=foreground, bg=background)
-    Perro9 = "Perrito Cool"
+    Perro1 = Text('French Poodle')
+    Perro2 = Text('Chihuaha')
+    Perro3 = Text('Dalmata')
+    Perro4 = Text('Golden Retriever')
+    Perro5 = Text('Labrador')
+    Perro6 = Text('Pastor Alemán')
+    Perro7 = Text('Akita')
+    Perro8 = Text('Galgo')
+    Perro9 = Text("Perrito Cool")
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
-    title = Title('Mejores Perritos',fg=Colors.Navy, bg=background, bold=True,blink=True)
-    cursor = Text(' >> ', fg=foreground, bg=background)
+    title = Title('Mejores Perritos')
+    cursor = Text(' >> ')
     menu1 = Menu(options, title=title, cursor=cursor, fg=Colors.red, bg=Colors.Beige)
     # Initialazing Variables
     pointer = 0
     wrap = 5
     keyboard = ''
     selected = Text('')
-    decorator = Text(' ', fg=foreground, bg=background)
+    decorator = Text('+')
     while True:
         clear_screen()
         
@@ -36,8 +36,8 @@ def main():
                     bg_gl=Colors.LimeGreen,
                     title_decorator=decorator,
                     title_align='center', 
-                    new_line_bottom=False,
-                    new_line_up=False
+                    padding_bottom=True,
+                    padding_up=True
                     )
         selected = menu1.selected
         print(f"\nHighlight Value: {selected.text}")

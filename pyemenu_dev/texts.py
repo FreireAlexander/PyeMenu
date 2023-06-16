@@ -33,6 +33,8 @@ class Text():
         self.text = text
         self.fg = html_rgb_fg(fg)
         self.bg = html_rgb_bg(bg)
+        self._fg = fg
+        self._bg = bg
         self.bold = bold
         self.italic = italic
         self.blink = blink
