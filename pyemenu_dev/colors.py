@@ -7,18 +7,33 @@
 
 # SGR color constants
 # rene-d 2018
+not_fg = '\x1b[39m'
+not_bg = '\x1b[49m'
 
-def html_rgb(color: str):
+def html_rgb_fg(color: str):
     """
     This function allow to transform html color to the format needed
     """
-    if color == '\x1b[0m':
-        return '\x1b[0m'
+    if color == not_fg:
+        return not_fg
     else:
         hex = color.lstrip('#')
         color = ";".join([str(int(hex[i:i+2], 16)) for i in (0, 2, 4)])
-        color = "2;"+color+"m"
+        color = "\x1b[38;2;"+color+"m"
         return color
+
+def html_rgb_bg(color: str):
+    """
+    This function allow to transform html color to the format needed
+    """
+    if color == not_bg:
+        return not_bg
+    else:
+        hex = color.lstrip('#')
+        color = ";".join([str(int(hex[i:i+2], 16)) for i in (0, 2, 4)])
+        color = "\x1b[48;2;"+color+"m"
+        return color
+
 
 class Colors:
     """

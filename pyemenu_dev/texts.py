@@ -1,6 +1,7 @@
-from .colors import html_rgb
+from .colors import html_rgb_fg, html_rgb_bg
 
-no_format = '\x1b[0m'
+not_fg = '\x1b[39m'
+not_bg = '\x1b[49m'
 
 class Text():
     """
@@ -8,10 +9,9 @@ class Text():
     in some terminal emulators as Kitty, Alacritty, etc...
     properties:
         text: str
-    ***** optionals *****    
-        text_color: str # in html format, much color colud be found in Color() Class
-        background_color: str # in html format, much color colud be found in Color() Class
     ***** Text Style *****
+        fg: str # in html format, much color colud be found in Color() Class
+        bg: str # in html format, much color colud be found in Color() Class
         bold: bool 
         italic: bool 
         underline: bool 
@@ -22,8 +22,8 @@ class Text():
     text: str = None
     
     def __init__(self,text: str, 
-                text_color: str = no_format, 
-                background_color: str = no_format,
+                fg: str = not_fg, 
+                bg: str = not_bg,
                 bold: bool = False,
                 italic: bool = False,
                 underline: bool = False,
@@ -31,8 +31,8 @@ class Text():
                 reverse: bool = False,
                 crossed: bool = False):
         self.text = text
-        self.text_color = html_rgb(text_color)
-        self.background_color = html_rgb(background_color)
+        self.fg = html_rgb_fg(fg)
+        self.bg = html_rgb_bg(bg)
         self.bold = bold
         self.italic = italic
         self.blink = blink
@@ -53,12 +53,14 @@ class Text():
             self.formatted = f"\x1b[7m" + self.formatted
         if self.crossed:
             self.formatted = f"\x1b[9m" + self.formatted
-        if self.text_color != no_format and self.background_color != no_format:
-            self.formatted = f"\x1b[38;{self.text_color}\x1b[48;{self.background_color}" + self.formatted
-        if self.text_color == no_format and self.background_color != no_format:
-            self.formatted = f"\x1b[48;{self.background_color}" + self.formatted
-        if self.text_color != no_format and self.background_color == no_format:
-            self.formatted = f"\x1b[38;{self.text_color}" + self.formatted
+        if self.fg != not_fg and self.bg != not_bg:
+            self.formatted = f"{self.fg}{self.bg}" + self.formatted
+        if self.fg == not_fg and self.bg == not_bg:
+            self.formatted = f"\x1b[0m" + self.formatted
+        if self.fg == not_fg and self.bg != not_bg:
+            self.formatted = f"{self.bg}" + self.formatted
+        if self.fg != not_fg and self.bg == not_bg:
+            self.formatted = f"{self.fg}" + self.formatted
         
         self.formatted += '\x1b[0m'
     
