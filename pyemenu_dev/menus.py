@@ -7,6 +7,8 @@
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
 """
 # Local Libraries
+import math
+from readchar import key
 from .texts import Text
 from .titles import Title
 from .colors import Colors, html_rgb_fg, html_rgb_bg
@@ -30,6 +32,7 @@ class Menu():
         self.cursor = cursor
         self.fg = html_rgb_fg(fg)
         self.bg = html_rgb_bg(bg)
+        self.selected = Text('Vacio')
         if type(cursor) != type(Text('')):
             self.cursor = Text(str(cursor), fg=fg, bg=bg)
         if type(cursor) == type(Text('')) and cursor._bg == not_bg and cursor._fg != not_fg:
@@ -91,31 +94,45 @@ class Menu():
         new_line_bottom: bool = False -> add a new line behind title
         """
         if padding_up:
-            print(f"\n{self.bg}{((2+self.cursor.lenght+self.max_len_option)*wrap)*' '}")
+            print(f"\n{self.bg}{((3+self.cursor.lenght+self.max_len_option)*wrap)*' '}")
         if self.title.text != '':
             self.title.print_title(title_align, title_decorator, 
-                (2+self.cursor.lenght+self.max_len_option)*wrap, 
+                (3+self.cursor.lenght+self.max_len_option)*wrap, 
                 title_padding_up, 
                 title_padding_bottom)
         for option in self.options:
+            
             if self.options.index(option) % wrap == 0:
                 print("")
             if pointer == self.options.index(option):
+                self.selected = option
+                if keyboard == key.ENTER:
+                    self.selected = option
                 if highlight:
                     op_hl = Text(option.text, fg=fg_hl, bg=bg_gl)
-                    print(f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{op_hl.bg} "\
-                        +f"{op_hl.formatted}{html_rgb_bg(bg_gl)}"\
-                        +f"{(self.max_len_option-len(option.text))*' '}", end="")
+                    print(
+                        f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{op_hl.bg} "\
+                        +f"{op_hl.formatted}{html_rgb_bg(bg_gl)} "\
+                        +f"{(self.max_len_option-len(option.text))*' '}", 
+                        end="")
                 else:
-                    print(f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{option.bg} "\
-                        +f"{option.formatted}{option.bg}"\
-                        +f"{(self.max_len_option-len(option.text))*' '}", end="")
-                self.selected = option
+                    print(
+                        f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{option.bg} "\
+                        +f"{option.formatted}{option.bg} "\
+                        +f"{(self.max_len_option-len(option.text))*' '}", 
+                        end="")
+                
             else:
-                print(f"{option.bg} {' '*(len(self.cursor.text)+1)}"\
-                    +f"{option.formatted}{option.bg}"\
-                    +f"{(self.max_len_option-len(option.text))*' '}", end="")
+                print(
+                    f"{option.bg} {' '*(len(self.cursor.text)+1)}"\
+                    +f"{option.formatted}{option.bg} "\
+                    +f"{(self.max_len_option-len(option.text))*' '}", 
+                    end="")
 
+        empty_blocks = int(math.ceil(len(self.options)/wrap)*wrap)-len(self.options)
+        if empty_blocks != 0:
+            for i in range(empty_blocks):
+                print(f"{self.bg}{((3+self.cursor.lenght+self.max_len_option))*' '}", end='')
         if padding_bottom:
-            print(f"\n{self.bg}{((2+self.cursor.lenght+self.max_len_option)*wrap)*' '}")
+            print(f"\n{self.bg}{((3+self.cursor.lenght+self.max_len_option)*wrap)*' '}")
         print(f"{nf}")

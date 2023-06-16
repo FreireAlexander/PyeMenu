@@ -15,3 +15,4 @@ from .colors import Colors, html_rgb_fg, html_rgb_bg
 from .texts import Text
 from .titles import Title
 from .menus import Menu
+from .checkboxlists import Checkboxlist

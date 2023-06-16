@@ -1,5 +1,5 @@
 import pyemenu_dev as pyemenu 
-from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist
+from pyemenu_dev import Colors, Title, Text, Menu
 from pyemenu_dev import getKeyboard, setCursor, clear_screen
 from readchar import key
 
@@ -18,16 +18,16 @@ def main():
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
     title = Title('Mejores Perritos')
     cursor = Text(' >> ')
-    menu1 = Checkboxlist(options, title=title, cursor=cursor, fg=Colors.red, bg=Colors.Beige)
+    menu1 = Menu(options, title=title, cursor=cursor, fg=Colors.red, bg=Colors.Beige)
     # Initialazing Variables
     pointer = 0
-    wrap = 2
+    wrap = 4
     keyboard = ''
     selected = Text('')
     decorator = Text('+')
     while True:
         clear_screen()
-        print([item[0].text for item in menu1.items])
+        
         menu1.print(pointer=pointer, 
                     keyboard=keyboard, 
                     wrap=wrap,
@@ -39,17 +39,18 @@ def main():
                     padding_bottom=True,
                     padding_up=True
                     )
-        selected = menu1.choices
-        print(f"\nHighlight Value: {selected}")
+        print(f"\nHighlight Value: {menu1.options[pointer].formatted}")
         keyboard = getKeyboard()
-        pointer = setCursor(keyboard, pointer, menu1.items, wrap)
+        pointer = setCursor(keyboard, pointer, menu1.options, wrap)
         if keyboard in ["q", "Q"]:
             break
         if keyboard == key.ENTER:
+            selected = menu1.selected
+            print("Salimos")
             break
     
-    print(f"Selected Value: {selected}")
-    
+    print(f"Selected Value: {selected.formatted}")
+    #print(f"In position {menu1.options.index(selected)}")
 
 if __name__ == '__main__':
     main()
