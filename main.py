@@ -1,5 +1,5 @@
 import pyemenu_dev as pyemenu 
-from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist
+from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form
 from pyemenu_dev import getKeyboard, setCursor, clear_screen
 from readchar import key
 
@@ -18,16 +18,16 @@ def main():
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
     title = Title('Mejores Perritos')
     cursor = Text(' >> ')
-    menu1 = Checkboxlist(options, title=title, cursor=cursor, fg=Colors.red, bg=Colors.Beige)
+    menu1 = Form(options, title=title, cursor=cursor, fg=Colors.red, bg=Colors.Beige)
     # Initialazing Variables
     pointer = 0
-    wrap = 2
+    wrap = 3
     keyboard = ''
     selected = Text('')
     decorator = Text('+')
     while True:
         clear_screen()
-        print([item[0].text for item in menu1.items])
+        print([item[0].text for item in menu1.entries])
         menu1.print(pointer=pointer, 
                     keyboard=keyboard, 
                     wrap=wrap,
@@ -39,10 +39,10 @@ def main():
                     padding_bottom=True,
                     padding_up=True
                     )
-        selected = menu1.choices
-        print(f"\nHighlight Value: {selected}")
+        selected = menu1.json
+        
         keyboard = getKeyboard()
-        pointer = setCursor(keyboard, pointer, menu1.items, wrap)
+        pointer = setCursor(keyboard, pointer, menu1.entries, wrap)
         if keyboard in ["q", "Q"]:
             break
         if keyboard == key.ENTER:

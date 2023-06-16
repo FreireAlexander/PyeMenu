@@ -112,7 +112,7 @@ class Checkboxlist():
                     if item[0].text not in self.choices:
                         self.items[self.items.index(item)][1] = Text('*', fg=item[0]._fg, bg=item[0]._bg)
                         self.choices.append(self.items[self.items.index(item)][0].text)
-                        pass
+                        
                     elif item[0].text in self.choices:
                         self.items[self.items.index(item)][1] = Text(' ', fg=item[0]._fg, bg=item[0]._bg)
                         self.choices.remove(self.items[self.items.index(item)][0].text)

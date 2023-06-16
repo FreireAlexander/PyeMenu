@@ -16,3 +16,4 @@ from .texts import Text
 from .titles import Title
 from .menus import Menu
 from .checkboxlists import Checkboxlist
+from .forms import Form
