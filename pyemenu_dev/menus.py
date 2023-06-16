@@ -20,11 +20,9 @@ class Menu():
     This class allow to create an simple option list for selecting
     one option from a list of options
     '''
-    def __init__(self, options: list, title: str = '', 
-                cursor: str = '-->',
-                fg: str = not_fg, 
-                bg: str = not_bg
-                ):
+    def __init__(self, options: list, 
+                title: str = '', cursor: str = '-->',
+                fg: str = not_fg, bg: str = not_bg):
         self.options = [Text(str(option), fg=fg, bg=bg) if type(option)!=type(Text('')) else option for option in options]
         self.max_len_option = max(self.options, key = lambda x: x.lenght).lenght
         title.width = self.max_len_option
@@ -63,18 +61,27 @@ class Menu():
         new_line_bottom: bool = False -> add a new line behind title
         """
         if self.title.text != '':
-            self.title.print_title(title_align, title_decorator, (2+self.cursor.lenght+self.max_len_option)*wrap, new_line_up, new_line_bottom)
+            self.title.print_title(title_align, title_decorator, 
+                (2+self.cursor.lenght+self.max_len_option)*wrap, 
+                new_line_up, 
+                new_line_bottom)
         for option in self.options:
             if self.options.index(option) % wrap == 0:
                 print("")
             if pointer == self.options.index(option):
                 if highlight:
                     op_hl = Text(option.text, fg=fg_hl, bg=bg_gl)
-                    print(f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{op_hl.bg} {op_hl.formatted}{html_rgb_bg(bg_gl)}"+f"{(self.max_len_option-len(option.text))*' '}", end="")
+                    print(f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{op_hl.bg} "\
+                        +f"{op_hl.formatted}{html_rgb_bg(bg_gl)}"\
+                        +f"{(self.max_len_option-len(option.text))*' '}", end="")
                 else:
-                    print(f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{option.bg} {option.formatted}{option.bg}"+f"{(self.max_len_option-len(option.text))*' '}", end="")
+                    print(f"{nf}{self.cursor.bg} {self.cursor.formatted}{nf}{option.bg} "\
+                        +f"{option.formatted}{option.bg}"\
+                        +f"{(self.max_len_option-len(option.text))*' '}", end="")
                 self.selected = option
             else:
-                print(f"{option.bg} {' '*(len(self.cursor.text)+1)}"+f"{option.formatted}{option.bg}"+f"{(self.max_len_option-len(option.text))*' '}", end="")
+                print(f"{option.bg} {' '*(len(self.cursor.text)+1)}"\
+                    +f"{option.formatted}{option.bg}"\
+                    +f"{(self.max_len_option-len(option.text))*' '}", end="")
 
         print(f"{nf}")
