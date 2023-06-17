@@ -1,4 +1,5 @@
-from .colors import html_rgb_fg, html_rgb_bg
+import uuid
+from .colors import setColor
 
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
@@ -19,22 +20,26 @@ class Text():
         reverse: bool 
         crossed: bool 
     """
-    text: str = None
     
-    def __init__(self,text: str, 
-                fg: str = not_fg, 
-                bg: str = not_bg,
-                bold: bool = False,
-                italic: bool = False,
-                underline: bool = False,
-                blink: bool = False,
-                reverse: bool = False,
-                crossed: bool = False):
+    def __init__(self, text: str, id=None,
+                name: str='',_class: str='', fg: str = not_fg, bg: str = not_bg,
+                bold: bool = False, italic: bool = False, underline: bool = False,
+                blink: bool = False, reverse: bool = False, crossed: bool = False):
         self.text = text
-        self.fg = html_rgb_fg(fg)
-        self.bg = html_rgb_bg(bg)
-        self._fg = fg
-        self._bg = bg
+        self.id = id
+        if name == '':
+            self.name = 'Text'
+        else:
+            self.name = str(name)
+        if _class == '':
+            self._class = 'Text'
+        else:
+            self._class = str(_class)
+        self._class = _class
+        self.fg = fg
+        self.fg_rgb = '\x1b[38;'+setColor(fg)
+        self.bg = bg
+        self.bg_rgb = '\x1b[48;'+setColor(bg)
         self.bold = bold
         self.italic = italic
         self.blink = blink
@@ -42,29 +47,35 @@ class Text():
         self.reverse = reverse
         self.crossed = crossed
         self.lenght = len(self.text)
-        self.formatted = self.text
-        if self.bold:
-            self.formatted = f"\x1b[1m" + self.formatted
-        if self.italic:
-            self.formatted = f"\x1b[3m" + self.formatted
-        if self.underline:
-            self.formatted = f"\x1b[4m" + self.formatted
-        if self.blink:
-            self.formatted = f"\x1b[5m" + self.formatted
-        if self.reverse:
-            self.formatted = f"\x1b[7m" + self.formatted
-        if self.crossed:
-            self.formatted = f"\x1b[9m" + self.formatted
-        if self.fg != not_fg and self.bg != not_bg:
-            self.formatted = f"{self.fg}{self.bg}" + self.formatted
-        if self.fg == not_fg and self.bg == not_bg:
-            self.formatted = f"\x1b[0m" + self.formatted
-        if self.fg == not_fg and self.bg != not_bg:
-            self.formatted = f"{self.bg}" + self.formatted
-        if self.fg != not_fg and self.bg == not_bg:
-            self.formatted = f"{self.fg}" + self.formatted
+        self.formatted = Text.style(self, self.text, bold, italic, underline, blink, reverse, crossed)
+
+    def style(self, chars,
+                bold: bool = False, italic: bool = False, underline: bool = False,
+                blink: bool = False, reverse: bool = False, crossed: bool = False):
+            result = chars
+            if bold:
+                result = f"\x1b[1m" + result
+            if italic:
+                result = f"\x1b[3m" + result
+            if underline:
+                result = f"\x1b[4m" + result
+            if blink:
+                result = f"\x1b[5m" + result
+            if reverse:
+                result = f"\x1b[7m" + result
+            if crossed:
+                result = f"\x1b[9m" + result
+            if self.fg != not_fg and self.bg != not_bg:
+                result = f"{self.fg_rgb}{self.bg_rgb}" + result
+            if self.fg == not_fg and self.bg == not_bg:
+                result = f"\x1b[0m" + result
+            if self.fg == not_fg and self.bg != not_bg:
+                result = f"{self.bg_rgb}" + result
+            if self.fg != not_fg and self.bg == not_bg:
+                result = f"{self.fg_rgb}" + result
         
-        self.formatted += '\x1b[0m'
+            result += '\x1b[0m'
+            return result
     
 
         

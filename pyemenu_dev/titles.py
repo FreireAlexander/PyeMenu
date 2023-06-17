@@ -20,49 +20,19 @@ class Title(Text):
         reverse: bool 
         crossed: bool 
     """
-    def __init__(self, 
-                    text: str,
-                    fg: str = not_fg,
-                    bg: str = not_bg,
-                    bold: bool = False,
-                    italic: bool = False,
-                    underline: bool = False,
-                    blink: bool = False,
-                    reverse: bool = False,
-                    crossed: bool = False):
-        super().__init__(text, fg, bg, 
-                        bold, italic, underline, blink, 
-                        reverse, crossed)
+    def __init__(self, text: str, id=None,
+                name: str='',_class: str='', fg: str = not_fg, bg: str = not_bg,
+                bold: bool = False, italic: bool = False, underline: bool = False,
+                blink: bool = False, reverse: bool = False, crossed: bool = False):
+        super().__init__(text, id, name,_class, fg, bg,
+                bold, italic, underline, blink, reverse, crossed)
         self.tilte_text = ' '+text+' '
-        self.lenght = len(self.tilte_text)
-        self.formatted = self.tilte_text
-        self._fg = fg
-        self._bg = bg
-        if self.bold:
-            self.formatted = f"\x1b[1m" + self.formatted
-        if self.italic:
-            self.formatted = f"\x1b[3m" + self.formatted
-        if self.underline:
-            self.formatted = f"\x1b[4m" + self.formatted
-        if self.blink:
-            self.formatted = f"\x1b[5m" + self.formatted
-        if self.reverse:
-            self.formatted = f"\x1b[7m" + self.formatted
-        if self.crossed:
-            self.formatted = f"\x1b[9m" + self.formatted
-        if self.fg != not_fg and self.bg != not_bg:
-            self.formatted = f"{self.fg}{self.bg}" + self.formatted
-        if self.fg == not_fg and self.bg == not_bg:
-            self.formatted = f"\x1b[0m" + self.formatted
-        if self.fg == not_fg and self.bg != not_bg:
-            self.formatted = f"{self.bg}" + self.formatted
-        if self.fg != not_fg and self.bg == not_bg:
-            self.formatted = f"{self.fg}" + self.formatted
+        self._lenght = len(self.tilte_text)
+        self.formatted = Text.style(self, self.tilte_text, bold, italic, underline, blink, reverse, crossed)
         
-        self.formatted += '\x1b[0m'        
     
     def print_title(self, align: str = 'center',
-                decorator: str = '',
+                decorator: str = ' ',
                 width: int = 0,
                 padding_up: bool = False,
                 padding_bottom: bool = False):
@@ -76,13 +46,13 @@ class Title(Text):
         new_line_bottom: bool = False -> add a new line behind title
         """
         if type(decorator) != type(Text('')):
-            decorator = Text(str(decorator), fg=self._fg, bg=self._bg)
-        if type(decorator) == type(Text('')) and decorator._bg == not_bg and decorator._fg != not_fg:
-            decorator = Text(decorator.text, bg=self._bg, fg=decorator._fg)
-        if type(decorator) == type(Text('')) and decorator._fg == not_fg and decorator._bg != not_bg:
-            decorator = Text(decorator.text, fg=self._fg, bg=decorator._bg)
-        if type(decorator) == type(Text('')) and decorator._fg == not_fg and decorator._bg == not_bg:
-            decorator = Text(decorator.text, fg=self._fg, bg=self._bg)
+            decorator = Text(str(decorator), fg=self.fg, bg=self.bg)
+        if type(decorator) == type(Text('')) and decorator.bg == not_bg and decorator.fg != not_fg:
+            decorator = Text(decorator.text, bg=self.bg, fg=decorator.fg)
+        if type(decorator) == type(Text('')) and decorator.fg == not_fg and decorator.bg != not_bg:
+            decorator = Text(decorator.text, fg=self.fg, bg=decorator.bg)
+        if type(decorator) == type(Text('')) and decorator.fg == not_fg and decorator.bg == not_bg:
+            decorator = Text(decorator.text, fg=self.fg, bg=self.bg)
         spaces = (width-self.lenght)
         if type(decorator)==type('str'):
             if align == 'center':
@@ -105,6 +75,7 @@ class Title(Text):
             if align == 'left':
                 title_text = f"{self.formatted}"+f"{spaces*decorator.formatted}"
         
+        title_text = title_text + '\x1b[0m'
         if padding_up and padding_bottom:
             print(f"{self.bg}{width*' '}")
             print(f"{title_text}")
@@ -116,3 +87,6 @@ class Title(Text):
             print(f"{title_text}")
             print(f"{self.bg}{width*' '}", end='')
         else: print(title_text, end='')
+
+        print('\x1b[0m')
+
