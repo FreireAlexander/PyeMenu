@@ -26,9 +26,9 @@ class Title(Text):
                 blink: bool = False, reverse: bool = False, crossed: bool = False):
         super().__init__(text, id, name,_class, fg, bg,
                 bold, italic, underline, blink, reverse, crossed)
-        self.tilte_text = ' '+text+' '
-        self._lenght = len(self.tilte_text)
-        self.formatted = Text.style(self, self.tilte_text, bold, italic, underline, blink, reverse, crossed)
+        self.title_text = ' '+text+' '
+        self._lenght = len(self.title_text)
+        self.formatted = Text.style(self, self.title_text, bold, italic, underline, blink, reverse, crossed)
         
     
     def print_title(self, align: str = 'center',
@@ -53,7 +53,7 @@ class Title(Text):
             decorator = Text(decorator.text, fg=self.fg, bg=decorator.bg)
         if type(decorator) == type(Text('')) and decorator.fg == not_fg and decorator.bg == not_bg:
             decorator = Text(decorator.text, fg=self.fg, bg=self.bg)
-        spaces = (width-self.lenght)
+        spaces = (width-self._lenght)
         if type(decorator)==type('str'):
             if align == 'center':
                 if spaces%2==0:
@@ -77,16 +77,16 @@ class Title(Text):
         
         title_text = title_text + '\x1b[0m'
         if padding_up and padding_bottom:
-            print(f"{self.bg}{width*' '}")
+            print(f"{self.bg_rgb}{width*' '}")
             print(f"{title_text}")
-            print(f"{self.bg}{width*' '}", end='')
+            print(f"{self.bg_rgb}{width*' '}", end='')
         elif padding_up:
-            print(f"{self.bg}{width*' '}")
+            print(f"{self.bg_rgb}{width*' '}")
             print(f"{title_text}", end='')
         elif padding_bottom:
             print(f"{title_text}")
-            print(f"{self.bg}{width*' '}", end='')
+            print(f"{self.bg_rgb}{width*' '}", end='')
         else: print(title_text, end='')
 
-        print('\x1b[0m')
+        print('\x1b[0m', end='')
 

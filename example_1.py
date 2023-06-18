@@ -17,7 +17,7 @@ def main():
     Perro9 = Text("Perrito Cool")
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
     title = Title('Mejores Perritos')
-    cursor = Text(' >> ')
+    cursor = Text('>>', bg=Colors.DarkBlue)
     menu1 = Menu(options, title=title, cursor=cursor, fg=Colors.red, bg=Colors.Beige)
     # Initialazing Variables
     pointer = 0
@@ -35,7 +35,9 @@ def main():
                     fg_hl=Colors.black, 
                     bg_gl=Colors.LimeGreen,
                     title_decorator=decorator,
-                    title_align='center', 
+                    title_align='center',
+                    title_padding_bottom=True,
+                    title_padding_up=True, 
                     padding_bottom=True,
                     padding_up=True
                     )
