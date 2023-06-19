@@ -11,7 +11,7 @@ import math
 from readchar import key
 from .texts import Text
 from .titles import Title
-from .colors import Colors, html_rgb_fg, html_rgb_bg
+from .colors import Colors, setColor
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'
@@ -30,8 +30,10 @@ class Menu():
         title.width = self.max_len_option
         self.title = title
         self.cursor = cursor
-        self.fg = html_rgb_fg(fg)
-        self.bg = html_rgb_bg(bg)
+        self.fg = fg
+        self.fg_rgb = '\x1b[38;'+setColor(fg)
+        self.bg = bg
+        self.bg_rgb = '\x1b[48;'+setColor(bg)
         self.selected = Text('Vacio')
         if type(cursor) != type(Text('')):
             self.cursor = Text(str(cursor), fg=fg, bg=bg)
