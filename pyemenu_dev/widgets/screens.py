@@ -1,3 +1,20 @@
+
+
+nf = '\x1b[0m'
+not_fg = '\x1b[39m'
+not_bg = '\x1b[49m'
+
+class Screen():
+    '''
+    This class allow to create a CheckBoxList for choice 
+    multiple option 
+    '''
+    def __init__(self, blocks: list, 
+                title: str = '', cursor: str = '-->',
+                fg: str = not_fg, bg: str = not_bg):
+        self.blocks = blocks
+
+"""
 def move_position(key, array, row, col):
     if key == UP:
         col -= array
@@ -75,3 +92,4 @@ def print_screen():
             print("hacia atrás")
     
     #pyemenu.menu('Cool', matrix)
+"""

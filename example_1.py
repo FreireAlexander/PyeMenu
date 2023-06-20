@@ -41,7 +41,7 @@ def main():
                     padding_bottom=True,
                     padding_up=True
                     )
-        print(f"\nHighlight Value: {menu1.options[pointer].formatted}")
+        print(f"\nHighlight Value: {menu1.options[pointer].styled}")
         keyboard = getKeyboard()
         pointer = setCursor(keyboard, pointer, menu1.options, wrap)
         if keyboard in ["q", "Q"]:
@@ -51,7 +51,7 @@ def main():
             print("Salimos")
             break
     
-    print(f"Selected Value: {selected.formatted}")
+    print(f"Selected Value: {selected.styled}")
     #print(f"In position {menu1.options.index(selected)}")
 
 if __name__ == '__main__':

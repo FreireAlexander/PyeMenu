@@ -9,9 +9,9 @@
 # Local Libraries
 import math
 from readchar import key
-from .texts import Text
-from .titles import Title
-from .colors import Colors, setColor
+from ..components import Text
+from ..components import Title
+from ..colors import Colors, setColor
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'
@@ -37,6 +37,8 @@ class Menu():
         self.selected = Text('Vacio')
         if type(cursor) != type(Text('')):
             self.cursor = Text(str(cursor), fg=fg, bg=bg)
+        if type(cursor) == type(Text('')) and cursor.fg != not_fg and cursor.bg != not_bg:
+            self.cursor = Text(cursor.text, fg=cursor.fg, bg=cursor.bg)
         if type(cursor) == type(Text('')) and cursor.bg == not_bg and cursor.fg != not_fg:
             self.cursor = Text(cursor.text, bg=bg, fg=cursor.fg)
         if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg != not_bg:
@@ -46,6 +48,8 @@ class Menu():
 
         if type(title) != type(Title('')):
             self.title = Title(str(title), fg=fg, bg=bg)
+        if type(title) == type(Title('')) and title.bg != not_bg and title.fg != not_fg:
+            self.title = Title(title.text, bg=title.bg, fg=title.fg)
         if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
             self.title = Title(title.text, bg=bg, fg=title.fg)
         if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
@@ -72,7 +76,7 @@ class Menu():
             wrap: int=1,
             highlight: bool = False,
             fg_hl = Colors.white,
-            bg_gl = Colors.Lime, 
+            bg_hl = Colors.Lime, 
             title_decorator: str= '',
             title_align: str='center',
             padding_up: bool = False,
@@ -88,7 +92,7 @@ class Menu():
         wrap: int -> how elements into options are wrapped
         highlight: bool = False,
         fg_hl -> foreground color for highlight current option
-        bg_gl -> background color for highlight current option
+        bg_hl -> background color for highlight current option
         title_align: str -> 'center', 'right' or 'left'
         title_decorator: str -> just one char to print around Title text
         width: int -> width in number of chars
@@ -97,7 +101,7 @@ class Menu():
         """
         block_width = 4+self.cursor.lenght+self.max_len_option
         if padding_up:
-            print(f"\n{self.bg}{(block_width*wrap)*' '}")
+            print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}")
         if self.title.text != '':
             self.title.print_title(title_align, title_decorator, 
                                     block_width*wrap, 
@@ -112,30 +116,30 @@ class Menu():
                 if keyboard == key.ENTER:
                     self.selected = option
                 if highlight:
-                    op_hl = Text(option.text, fg=fg_hl, bg=bg_gl)
+                    op_hl = Text(option.text, fg=fg_hl, bg=bg_hl)
                     print(
-                        f"{self.cursor.bg_rgb} {self.cursor.formatted}{self.cursor.bg_rgb} "\
-                        +f"{op_hl.bg_rgb} {op_hl.formatted}{op_hl.bg_rgb} "\
+                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                        +f"{op_hl.bg_rgb} {op_hl.styled}{op_hl.bg_rgb} "\
                         +f"{(self.max_len_option-len(option.text))*' '}", 
                         end="")
                 else:
                     print(
-                        f"{self.cursor.bg_rgb} {self.cursor.formatted}{self.cursor.bg_rgb} "
-                        +f"{option.bg_rgb} {option.formatted}{option.bg_rgb} "\
+                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "
+                        +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
                         +f"{(self.max_len_option-len(option.text))*' '}", 
                         end="")
                 
             else:
                 print(
                     f"{self.cursor.bg_rgb} {self.cursor.lenght*' '}{self.cursor.bg_rgb} "\
-                    +f"{option.bg_rgb} {option.formatted}{option.bg_rgb} "\
+                    +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
                     +f"{(self.max_len_option-len(option.text))*' '}", 
                     end="")
 
         empty_blocks = int(math.ceil(len(self.options)/wrap)*wrap)-len(self.options)
         if empty_blocks != 0:
             for i in range(empty_blocks):
-                print(f"{self.bg}{(block_width)*' '}", end='')
+                print(f"{self.bg_rgb}{(block_width)*' '}", end='')
         if padding_bottom:
-            print(f"\n{self.bg}{(block_width*wrap)*' '}")
+            print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}", end='')
         print(f"{nf}")

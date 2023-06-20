@@ -1,5 +1,4 @@
-import uuid
-from .colors import setColor
+from ..colors import setColor
 
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
@@ -47,9 +46,10 @@ class Text():
         self.reverse = reverse
         self.crossed = crossed
         self.lenght = len(self.text)
-        self.formatted = Text.style(self, self.text, bold, italic, underline, blink, reverse, crossed)
+        self.styled = Text.style(self, self.text, self.fg, self.bg, 
+                                self.bold, self.italic, self.underline, self.blink, self.reverse, self.crossed)
 
-    def style(self, chars,
+    def style(self, chars, fg: str = not_fg, bg: str = not_bg,
                 bold: bool = False, italic: bool = False, underline: bool = False,
                 blink: bool = False, reverse: bool = False, crossed: bool = False):
             result = chars
@@ -65,14 +65,14 @@ class Text():
                 result = f"\x1b[7m" + result
             if crossed:
                 result = f"\x1b[9m" + result
-            if self.fg != not_fg and self.bg != not_bg:
-                result = f"{self.fg_rgb}{self.bg_rgb}" + result
-            if self.fg == not_fg and self.bg == not_bg:
+            if fg != not_fg and bg != not_bg:
+                result = f"\x1b[38;{setColor(fg)}\x1b[48;{setColor(bg)}" + result
+            if fg == not_fg and bg == not_bg:
                 result = f"\x1b[0m" + result
-            if self.fg == not_fg and self.bg != not_bg:
-                result = f"{self.bg_rgb}" + result
-            if self.fg != not_fg and self.bg == not_bg:
-                result = f"{self.fg_rgb}" + result
+            if fg == not_fg and bg != not_bg:
+                result = f"\x1b[48;{setColor(bg)}" + result
+            if fg != not_fg and bg == not_bg:
+                result = f"\x1b[38;{setColor(fg)}" + result
         
             result += '\x1b[0m'
             return result

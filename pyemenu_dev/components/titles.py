@@ -28,7 +28,8 @@ class Title(Text):
                 bold, italic, underline, blink, reverse, crossed)
         self.title_text = ' '+text+' '
         self._lenght = len(self.title_text)
-        self.formatted = Text.style(self, self.title_text, bold, italic, underline, blink, reverse, crossed)
+        self.styled = Text.style(self, self.title_text, self.fg, self.bg, 
+                                 self.bold, self.italic, self.underline, self.blink, self.reverse, self.crossed)
         
     
     def print_title(self, align: str = 'center',
@@ -47,6 +48,8 @@ class Title(Text):
         """
         if type(decorator) != type(Text('')):
             decorator = Text(str(decorator), fg=self.fg, bg=self.bg)
+        if type(decorator) == type(Text('')) and decorator.bg != not_bg and decorator.fg != not_fg:
+            decorator = Text(decorator.text, bg=decorator.bg, fg=decorator.fg)
         if type(decorator) == type(Text('')) and decorator.bg == not_bg and decorator.fg != not_fg:
             decorator = Text(decorator.text, bg=self.bg, fg=decorator.fg)
         if type(decorator) == type(Text('')) and decorator.fg == not_fg and decorator.bg != not_bg:
@@ -59,21 +62,21 @@ class Title(Text):
                 if spaces%2==0:
                     title_text = f"{spaces//2*decorator}"+f"{self.text}"+f"{spaces//2*decorator}"
                 else:
-                    title_text = f"{(spaces//2+1)*decorator}"+f"{self.formatted}"+f"{spaces//2*decorator}"
+                    title_text = f"{(spaces//2+1)*decorator}"+f"{self.styled}"+f"{spaces//2*decorator}"
             if align == 'right':
-                title_text = f"{spaces*decorator}"+f"{self.formatted}"
+                title_text = f"{spaces*decorator}"+f"{self.styled}"
             if align == 'left':
-                title_text = f"{self.formatted}"+f"{spaces*decorator}"   
+                title_text = f"{self.styled}"+f"{spaces*decorator}"   
         if type(decorator)==type(Text('')):
             if align == 'center':
                 if spaces%2==0:
-                    title_text = f"{spaces//2*decorator.formatted}"+f"{self.formatted}"+f"{spaces//2*decorator.formatted}"
+                    title_text = f"{spaces//2*decorator.styled}"+f"{self.styled}"+f"{spaces//2*decorator.styled}"
                 else:
-                    title_text = f"{(spaces//2+1)*decorator.formatted}"+f"{self.formatted}"+f"{spaces//2*decorator.formatted}"
+                    title_text = f"{(spaces//2+1)*decorator.styled}"+f"{self.styled}"+f"{spaces//2*decorator.styled}"
             if align == 'right':
-                title_text = f"{spaces*decorator.formatted}"+f"{self.formatted}"
+                title_text = f"{spaces*decorator.styled}"+f"{self.styled}"
             if align == 'left':
-                title_text = f"{self.formatted}"+f"{spaces*decorator.formatted}"
+                title_text = f"{self.styled}"+f"{spaces*decorator.styled}"
         
         title_text = title_text + '\x1b[0m'
         if padding_up and padding_bottom:

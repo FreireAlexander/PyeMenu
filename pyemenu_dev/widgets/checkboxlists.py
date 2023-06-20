@@ -9,9 +9,10 @@
 # Local Libraries
 import math
 from readchar import key, readchar
-from .texts import Text
-from .titles import Title
-from .colors import Colors, setColor
+from ..components import Text
+from ..components import Checkbox
+from ..components import Title
+from ..colors import Colors, setColor
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'
@@ -25,8 +26,8 @@ class Checkboxlist():
     def __init__(self, items: list, 
                 title: str = '', cursor: str = '-->',
                 fg: str = not_fg, bg: str = not_bg):
-        __items = [Text(str(item)) if type(item)!=type(Text('')) else item for item in items]
-        self.max_len_item = max(__items, key = lambda x: x.lenght).lenght
+        __items = [item if type(item)==type(Text('')) else Checkbox(str(item)) for item in items]
+        self.max_len_item = len(max(__items, key = lambda x: x.lenght).text)
         title.width = self.max_len_item
         self.title = title
         self.cursor = cursor
@@ -37,6 +38,8 @@ class Checkboxlist():
         self.choices = []
         if type(cursor) != type(Text('')):
             self.cursor = Text(str(cursor), fg=fg, bg=bg)
+        if type(cursor) == type(Text('')) and cursor.fg != not_fg and cursor.bg != not_bg:
+            self.cursor = Text(cursor.text, fg=cursor.fg, bg=cursor.bg)
         if type(cursor) == type(Text('')) and cursor.bg == not_bg and cursor.fg != not_fg:
             self.cursor = Text(cursor.text, bg=bg, fg=cursor.fg)
         if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg != not_bg:
@@ -46,6 +49,8 @@ class Checkboxlist():
 
         if type(title) != type(Title('')):
             self.title = Title(str(title), fg=fg, bg=bg)
+        if type(title) == type(Title('')) and title.bg != not_bg and title.fg != not_fg:
+            self.title = Title(title.text, bg=title.bg, fg=title.fg)
         if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
             self.title = Title(title.text, bg=bg, fg=title.fg)
         if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
@@ -56,19 +61,17 @@ class Checkboxlist():
         self.items = []
         for item in items:
             if type(item) != type(Text('')):
-                item = Text(str(item), fg=fg, bg=bg)
-                mark = Text(str(' '), fg=fg, bg=bg)
+                item = Checkbox(str(item), fg=fg, bg=bg)
+            if type(item) == type(Text('')) and item.bg != not_bg and item.fg != not_fg:
+                item = Checkbox(item.text, fg=item.fg, bg=item.bg)
             if type(item) == type(Text('')) and item.bg == not_bg and item.fg != not_fg:
-                item = Text(item.text, bg=bg, fg=item.fg)
-                mark = Text(str(' '), fg=item.fg, bg=bg)
+                item = Checkbox(item.text, bg=bg, fg=item.fg)
             if type(item) == type(Text('')) and item.fg == not_fg and item.bg != not_bg:
-                item = Text(item.text, fg=fg, bg=item.bg)
-                mark = Text(str(' '), fg=fg, bg=item.bg)
+                item = Checkbox(item.text, fg=fg, bg=item.bg)
             if type(item) == type(Text('')) and item.fg == not_fg and item.bg == not_bg:
-                item = Text(item.text, fg=fg, bg=bg)
-                mark = Text(str(' '), fg=fg, bg=bg)
+                item = Checkbox(item.text, fg=fg, bg=bg)
             
-            self.items.append([item, mark])
+            self.items.append(item)
 
     def print(self,
             pointer: int = 0,
@@ -76,7 +79,7 @@ class Checkboxlist():
             wrap: int=1,
             highlight: bool = False,
             fg_hl = Colors.white,
-            bg_gl = Colors.Lime, 
+            bg_hl = Colors.Lime, 
             title_decorator: str= '',
             title_align: str='center',
             padding_up: bool = False,
@@ -112,36 +115,35 @@ class Checkboxlist():
                 print("")
             if pointer == self.items.index(item):
                 if keyboard == key.SPACE:
-                    if item[0].text not in self.choices:
-                        self.items[self.items.index(item)][1] = Text('*', fg=item[0].fg, bg=item[0].bg)
-                        self.choices.append(self.items[self.items.index(item)][0].text)
-                    elif item[0].text in self.choices:
-                        self.items[self.items.index(item)][1] = Text(' ', fg=item[0].fg, bg=item[0].bg)
-                        self.choices.remove(self.items[self.items.index(item)][0].text)
+                    if item.text not in self.choices:
+                        item.onSelect()
+                        self.choices.append(self.items[self.items.index(item)].text)
+                    elif item.text in self.choices:
+                        item.onSelect()
+                        self.choices.remove(self.items[self.items.index(item)].text)
 
                 if highlight:
-                    it_hl = Text(item[0].text, fg=fg_hl, bg=bg_gl)
-                    mk_hl = Text(item[1].text, fg=fg_hl, bg=bg_gl)
+                    it_hl = Checkbox(item.text, item.id, item.box,item.name, item._class, fg_hl, bg_hl,
+                                     item.bold, item.italic, item.underline, item.blink, item.reverse, 
+                                     item.crossed)
                     print(
-                        f"{self.cursor.bg_rgb} {self.cursor.formatted}{self.cursor.bg_rgb} "\
-                        +f"{it_hl.bg_rgb}{it_hl.fg_rgb} [{mk_hl.formatted}{it_hl.bg_rgb}{it_hl.fg_rgb}] "\
-                        +f"{it_hl.bg_rgb} {it_hl.formatted}{it_hl.bg_rgb} "\
-                        +f"{(self.max_len_item-len(item[0].text))*' '}", 
+                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                        +f"{it_hl.print}{it_hl.bg_rgb}"\
+                        +f"{(self.max_len_item-len(item.text))*' '}", 
                         end="")
                 else:
                     print(
-                        f"{self.cursor.bg_rgb} {self.cursor.formatted}{self.cursor.bg_rgb} "\
-                        +f"{item[0].bg_rgb} [{item[1].formatted}{item[0].bg_rgb}] "\
-                        +f"{item[0].bg_rgb} {item[0].formatted}{item[0].bg_rgb} "\
-                        +f"{(self.max_len_item-len(item[0].text))*' '}", end="")
+                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                        +f"{item.print}{item.bg_rgb}"\
+                        +f"{(self.max_len_item-len(item.text))*' '}", 
+                        end="")
                 
                 
             else:
                 print(
-                    f"{item[0].bg_rgb} {' '*(len(self.cursor.text))}{item[0].bg_rgb} "\
-                    +f"{item[1].fg_rgb} [{item[1].formatted}{item[1].fg_rgb}{item[1].bg_rgb}] "\
-                    +f"{item[0].bg_rgb} {item[0].formatted}{item[0].bg_rgb} "\
-                    +f"{(self.max_len_item-len(item[0].text))*' '}", 
+                    f"{self.cursor.bg_rgb} {' '*(len(self.cursor.text))}{self.cursor.bg_rgb} "\
+                    +f"{item.print}{item.bg_rgb}"\
+                    +f"{(self.max_len_item-len(item.text))*' '}", 
                     end="")
 
         empty_blocks = int(math.ceil(len(self.items)/wrap)*wrap)-len(self.items)
@@ -153,5 +155,4 @@ class Checkboxlist():
             print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}")
         print(f"")
 
-        print(f"{nf}")
-        
+        print(f"{nf}")        

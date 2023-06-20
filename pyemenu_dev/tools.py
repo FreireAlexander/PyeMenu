@@ -19,7 +19,7 @@ DOWN    = key.DOWN
 LEFT    = key.LEFT
 RIGHT   = key.RIGHT
 SPACE   = key.SPACE
-input_info = """Press ENTER to select an option"""
+input_info = """Press ENTER to select an option\nPress SPACE to edit or mark an item"""
 input_exit = """Press (q) to exit"""
 
 # Os.clear functions
@@ -64,6 +64,7 @@ def setCursor(keyboard, pointer: int, options: list, wrap: int):
     if keyboard == LEFT:  pointer -=1
     if keyboard == RIGHT: pointer +=1
     if pointer < 0: pointer = previous_pointer
+    if previous_pointer > len(options) - 1: pointer = 0
     if pointer > len(options) - 1: pointer = previous_pointer
     
     return pointer
