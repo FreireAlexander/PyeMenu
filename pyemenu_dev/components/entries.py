@@ -38,41 +38,37 @@ class Entry(Text):
         self._text = ' '+label+' '
         self._lenght = len(self._text)
         
-        self._placeholder_fg = placeholder_fg
-        self._placeholder_bg = placeholder_bg
-        self.placeholder_fg, self.placeholder_bg, self.placeholder_fg_rgb, self.placeholder_bg_rgb = Entry.setPlaceholder(self, fg, bg,
-                                                                                                                            placeholder_bg,
-                                                                                                                            placeholder_fg)        
+        self.placeholder_fg = placeholder_fg
+        self.placeholder_bg = placeholder_bg
+        self.placeholder_fg_rgb, self.placeholder_bg_rgb = Entry.setPlaceholder(self)     
         self.styled_text = Text.style(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
         self.value = value
         self._value = ' '+value+' '
-        self.styled_value = Text.style(self, self._value, self._placeholder_fg, self._placeholder_bg, bold, italic, underline, blink, reverse, crossed)
+        self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, bold, italic, underline, blink, reverse, crossed)
         self._len_value = len(self.value)
         self.print_label = f"{self.styled_text}{self.bg_rgb} "+"\x1b[0m"
         self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
         self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value
         
-    def setPlaceholder(self, fg, bg, placeholder_bg, placeholder_fg):
-        if placeholder_bg == not_bg and placeholder_fg == not_fg:
-            placeholder_fg = fg
-            placeholder_bg = bg
+    def setPlaceholder(self):
+        if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:
+            print("PL no tiene ni fondo ni letra ")
             placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
             placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
-        if placeholder_bg != not_bg and placeholder_fg == not_fg:
-            placeholder_fg = fg
-            placeholder_bg = placeholder_bg
-            placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(placeholder_bg)
-        if placeholder_bg == not_bg and placeholder_fg != not_fg:
-            placeholder_fg = placeholder_fg
-            placeholder_bg = bg
-            placeholder_fg_rgb = '\x1b[38;'+setColor(placeholder_fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
-        if placeholder_bg != not_bg and placeholder_fg != not_fg:
-            placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
+        if self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
+            print("PL no letra ")
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
+        if self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
+            print("PL no tiene fondo ")
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
+        if self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
+            
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
         
-        return placeholder_fg, placeholder_bg, placeholder_fg_rgb, placeholder_bg_rgb
+        return placeholder_fg_rgb, placeholder_bg_rgb
     
     
     def onSelect(self):
@@ -94,7 +90,7 @@ class Entry(Text):
             elif self.validation == 'float':
                 while True:
                     try:
-                        value = float(input("Please enter a number: "))
+                        value = str(float(input("Please enter a number: ")))
                     except ValueError:
                         print("Oops!  That was not a valid number.  Try again...")
                     else:
@@ -102,7 +98,7 @@ class Entry(Text):
             elif self.validation == 'int':
                 while True:
                     try:
-                        value = int(input("Please enter a number: "))
+                        value = str(int(input("Please enter a number: ")))
                     except ValueError:
                         print("Oops!  That was not a valid integer number.  Try again...")
                     else:
@@ -119,9 +115,9 @@ class Entry(Text):
                     value = input("Type email again: ")
             elif self.validation == 'checkbox':
                 if self.value == ' ':
-                    self.value = 'x'
+                    value = 'x'
                 else:
-                    self.value = ' '
+                    value = ' '
             else:
                 value = input("Type new value: ")
                 while self.validation(value) == False:

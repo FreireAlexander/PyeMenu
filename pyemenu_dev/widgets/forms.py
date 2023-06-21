@@ -38,9 +38,7 @@ class Form():
         self.bg_rgb = '\x1b[48;'+setColor(bg)
         self.placeholder_fg = placeholder_fg
         self.placeholder_bg = placeholder_bg
-        self.placeholder_fg, self.placeholder_bg, self.placeholder_fg_rgb, self.placeholder_bg_rgb = Entry.setPlaceholder(self, fg, bg,
-                                                                                                                            placeholder_bg,
-                                                                                                                            placeholder_fg)
+        self.placeholder_fg_rgb, self.placeholder_bg_rgb = Form.setPlaceholder(self)
         __entries = Form.setEntries(self, entries)
         self.entries = __entries
         self.max_len_item = max(self.entries, key = lambda x: x.lenght).lenght
@@ -128,7 +126,7 @@ class Form():
                     +f"{item.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
                     +f"{item.fg_rgb}:"\
                     +f"{item.styled_value}{item.placeholder_bg_rgb}"\
-                    +f"\x1b[48;{setColor(item._placeholder_bg)}{(self.max_len_values-item._len_value)*' '}", 
+                    +f"{item.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}", 
                     end="")
 
         empty_blocks = int(math.ceil(len(self.entries)/wrap)*wrap)-len(self.entries)
@@ -146,6 +144,7 @@ class Form():
         __entries = []
         for entry in entries:
             if type(entry) not in [type(Text('')), type(Entry('')), type(Checkbox(''))]:
+                print(f"{entry} porque era un texto")
                 entry = Entry(str(entry), value=' ', validation='all',fg=self.fg, bg=self.bg, 
                               placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg)
             if type(entry) in [type(Text('')), type(Entry('')), type(Checkbox(''))]:
@@ -153,45 +152,48 @@ class Form():
                     print(f"{entry.text} verificacion 1")
                     entry.bg = self.bg
                     entry.fg = self.fg
-                elif entry.bg != not_bg and entry.fg==not_fg:
+                if entry.bg != not_bg and entry.fg==not_fg:
                     print(f"{entry.text} verificacion 2")
                     entry.fg = self.fg
-                elif entry.bg == not_bg and entry.fg!=not_fg:
+                if entry.bg == not_bg and entry.fg!=not_fg:
                     print(f"{entry.text} verificacion 3")
                     entry.bg = self.bg
 
                 
                 if type(entry) == type(Text('')):
                     entry = Entry(entry.text, entry.id, ' ', 'all', entry.name, entry._class,
-                                entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, entry.bold, entry.italic, 
+                                entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, 
+                                entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                elif type(entry) == type(Checkbox('')):
-                    entry = Entry(entry.text, entry.id, ' ', 'checkbox', entry.name, entry._class,
-                                entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, entry.bold, entry.italic, 
-                                entry.underline, entry.blink, entry.reverse, entry.crossed)
-                elif type(entry) == type(Entry('')):
-                    if entry._placeholder_bg == not_bg and entry._placeholder_fg == not_fg:
+                if type(entry) == type(Checkbox('')):
+                    entry = Entry(entry.text, id=entry.id, value=' ', validation='checkbox', 
+                                  name=entry.name, _class=entry._class, fg=entry.fg, bg=entry.bg, 
+                                  placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg, 
+                                  bold=entry.bold, italic=entry.italic, underline=entry.underline, 
+                                  blink=entry.blink, reverse=entry.reverse, crossed=entry.crossed)
+                if type(entry) == type(Entry('')):
+                    if entry.placeholder_bg == not_bg and entry.placeholder_fg == not_fg:
                         print(f"{entry.text} verificacion 5")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
                                 entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                    elif entry._placeholder_bg != not_bg and entry._placeholder_fg == not_fg:
+                    if entry.placeholder_bg != not_bg and entry.placeholder_fg == not_fg:
                         print(f"{entry.text} verificacion 6")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
-                                entry.fg, entry.bg, entry.placeholder_fg, entry._placeholder_bg, 
+                                entry.fg, entry.bg, entry.placeholder_fg, entry.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                    elif entry._placeholder_bg == not_bg and entry._placeholder_fg != not_fg:
+                    if entry.placeholder_bg == not_bg and entry.placeholder_fg != not_fg:
                         print(f"{entry.text} verificacion 7")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
                                 entry.fg, entry.bg, entry.placeholder_fg, self.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                    elif entry._placeholder_bg != not_bg and entry._placeholder_fg != not_fg:
+                    if entry.placeholder_bg != not_bg and entry.placeholder_fg != not_fg:
                         print(f"{entry.text} verificacion 8")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
-                                entry.fg, entry.bg, entry._placeholder_fg, entry._placeholder_bg, 
+                                entry.fg, entry.bg, entry.placeholder_fg, entry.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
                     
@@ -199,3 +201,23 @@ class Form():
             __entries.append(entry)
 
         return __entries
+    
+    def setPlaceholder(self):
+        if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:
+            print("PL no tiene ni fondo ni letra ")
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
+        if self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
+            print("PL no letra ")
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
+        if self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
+            print("PL no tiene fondo ")
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
+        if self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
+            
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
+        
+        return placeholder_fg_rgb, placeholder_bg_rgb
