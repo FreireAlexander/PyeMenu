@@ -37,10 +37,10 @@ class Entry(Text):
         self.validation = validation
         self._text = ' '+label+' '
         self._lenght = len(self._text)
-        
+        #print(f"inicializando entry {self.text}")
         self.placeholder_fg = placeholder_fg
         self.placeholder_bg = placeholder_bg
-        self.placeholder_fg_rgb, self.placeholder_bg_rgb = Entry.setPlaceholder(self)     
+        Entry.setPlaceholder(self)     
         self.styled_text = Text.style(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
         self.value = value
         self._value = ' '+value+' '
@@ -52,23 +52,39 @@ class Entry(Text):
         
     def setPlaceholder(self):
         if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:
-            print("PL no tiene ni fondo ni letra ")
-            placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
-        if self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
-            print("PL no letra ")
-            placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
-        if self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
-            print("PL no tiene fondo ")
-            placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
-        if self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
-            
-            placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
-            placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
+            #print(f"Iniciando entry {self.text}")
+            #print("PL no tiene ni fondo ni letra ")
+            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
+            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
+            #print(f"bg{self.bg} fg{self.fg}")
+            #print(f"PL bg{self.placeholder_bg} fg{self.placeholder_fg}")
+            #print(f"rgb {self.placeholder_bg_rgb}{self.placeholder_fg_rgb} Asi quede \x1b[0m")
+        elif self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
+            #print(f"Iniciando entry {self.text}")
+            #print("PL no letra ")
+            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
+            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
+            #print(f"bg{self.bg} fg{self.fg}")
+            #print(f"PL bg{self.placeholder_bg} fg{self.placeholder_fg}")
+            #print(f"rgb {self.placeholder_bg_rgb}{self.placeholder_fg_rgb} Asi quede \x1b[0m")
+        elif self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
+            #print(f"Iniciando entry {self.text}")
+            #print("PL no tiene fondo ")
+            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
+            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
+            #print(f"bg{self.bg} fg{self.fg}")
+            #print(f"PL bg{self.placeholder_bg} fg{self.placeholder_fg}")
+            #print(f"rgb {self.placeholder_bg_rgb}{self.placeholder_fg_rgb} Asi quede \x1b[0m")
+        elif self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
+            #print(f"Iniciando entry {self.text}")
+            #print('tutto a posto')
+            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
+            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
+            #print(f"bg{self.bg} fg{self.fg}")
+            #print(f"PL bg{self.placeholder_bg} fg{self.placeholder_fg}")
+            #print(f"rgb {self.placeholder_bg_rgb}{self.placeholder_fg_rgb} Asi quede \x1b[0m")
         
-        return placeholder_fg_rgb, placeholder_bg_rgb
+        return self.placeholder_fg_rgb, self.placeholder_bg_rgb
     
     
     def onSelect(self):

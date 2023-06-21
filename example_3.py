@@ -8,20 +8,24 @@ def main():
     background = Colors.white
     name = 'Name'
     surname = Text('Surname', fg=Colors.red, bg=Colors.Navy)
-    last_name = Text('Last Name', fg=Colors.Navy)
+    last_name = Text('Last', fg=Colors.Navy)
     age = Entry('Age', validation='int',
                  bg=Colors.yellow, placeholder_bg=Colors.pink)
     credit = Checkbox('Card')
     password = Entry('Password', validation='password',
-                 bg=Colors.yellow)    
+                 bg=Colors.yellow, placeholder_fg=Colors.red)    
     options = [name, surname, last_name, age, credit,password]
     title = Title('New User')
     cursor = Text('~>')
-    menu1 = Form(options, title=title, cursor=cursor, fg=foreground, bg=background)
+    clear_screen()
+    print("Aqui empieza lo del while ")
+    menu1 = Form(options, title=title, cursor=cursor, fg=foreground, bg=background,
+                 placeholder_fg=Colors.DarkBlue, placeholder_bg=Colors.DimGray)
     # Initialazing Variables
     pointer = 0
     wrap = 2
     keyboard = ''
+    
     while True:
         clear_screen()
         menu1.print(pointer=pointer, 
