@@ -27,7 +27,7 @@ class Entry(Text):
         reverse: bool 
         crossed: bool 
     """
-    def __init__(self, label: str, id=None, value: str=' ', validation='all',
+    def __init__(self, label: str, id=None, value: str='', validation='all',
                 name: str='',_class: str='', fg: str = not_fg, bg: str = not_bg,
                 placeholder_fg: str = not_fg, placeholder_bg: str = not_bg,
                 bold: bool = False, italic: bool = False, underline: bool = False,

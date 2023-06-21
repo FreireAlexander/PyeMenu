@@ -102,14 +102,24 @@ class Form():
                     it_hl = Entry(item.text, item.id, item.value, item.validation, item.name,
                                   item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
                                   item.italic, item.underline, item.blink, item.reverse, item.crossed)
-                    print(
-                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
-                        +f"{it_hl.styled_text}"\
-                        +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
-                        +f"{it_hl.fg_rgb}:"\
-                        +f"{it_hl.styled_value}"\
-                        +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
-                        end="")
+                    if it_hl.validation=='password':
+                        print(
+                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                            +f"{it_hl.styled_text}"\
+                            +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                            +f"{it_hl.fg_rgb}:"\
+                            +f" {it_hl._len_value*'*'} "\
+                            +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
+                            end="")
+                    else:
+                        print(
+                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                            +f"{it_hl.styled_text}"\
+                            +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                            +f"{it_hl.fg_rgb}:"\
+                            +f"{it_hl.styled_value}"\
+                            +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
+                            end="")
                 else:
                     print(
                         f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
