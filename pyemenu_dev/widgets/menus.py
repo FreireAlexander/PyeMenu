@@ -35,27 +35,8 @@ class Menu():
         self.bg = bg
         self.bg_rgb = '\x1b[48;'+setColor(bg)
         self.selected = Text('Vacio')
-        if type(cursor) != type(Text('')):
-            self.cursor = Text(str(cursor), fg=fg, bg=bg)
-        if type(cursor) == type(Text('')) and cursor.fg != not_fg and cursor.bg != not_bg:
-            self.cursor = Text(cursor.text, fg=cursor.fg, bg=cursor.bg)
-        if type(cursor) == type(Text('')) and cursor.bg == not_bg and cursor.fg != not_fg:
-            self.cursor = Text(cursor.text, bg=bg, fg=cursor.fg)
-        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg != not_bg:
-            self.cursor = Text(cursor.text, fg=fg, bg=cursor.bg)
-        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg == not_bg:
-            self.cursor = Text(cursor.text, fg=fg, bg=bg)
-
-        if type(title) != type(Title('')):
-            self.title = Title(str(title), fg=fg, bg=bg)
-        if type(title) == type(Title('')) and title.bg != not_bg and title.fg != not_fg:
-            self.title = Title(title.text, bg=title.bg, fg=title.fg)
-        if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
-            self.title = Title(title.text, bg=bg, fg=title.fg)
-        if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
-            self.title = Title(title.text, fg=fg, bg=title.bg)
-        if type(title) == type(Title('')) and title.fg == not_fg and title.bg == not_bg:
-            self.title = Title(title.text, fg=fg, bg=bg)
+        self.cursor = Text.setText(self, cursor)
+        self.title = Title.setTitle(self, title)
 
         self.options = []
         for option in options:
@@ -77,7 +58,7 @@ class Menu():
             highlight: bool = False,
             fg_hl = Colors.white,
             bg_hl = Colors.Lime, 
-            title_decorator: str= '',
+            title_decorator: str= ' ',
             title_align: str='center',
             padding_up: bool = False,
             padding_bottom: bool = False, 

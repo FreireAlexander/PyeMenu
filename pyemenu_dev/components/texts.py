@@ -25,6 +25,7 @@ class Text():
                 bold: bool = False, italic: bool = False, underline: bool = False,
                 blink: bool = False, reverse: bool = False, crossed: bool = False):
         self.text = text
+        self._text = ' '+text+' '
         self.id = id
         if name == '':
             self.name = 'Text'
@@ -77,5 +78,29 @@ class Text():
             result += '\x1b[0m'
             return result
     
-
+    def setText(self, cursor):
+        if type(cursor) != type(Text('')):
+            cursor = Text(str(cursor), fg=self.fg, bg=self.bg)
+        if type(cursor) == type(Text('')) and cursor.fg != not_fg and cursor.bg != not_bg:
+            cursor = Text(cursor.text, fg=cursor.fg, bg=cursor.bg, 
+                               id=cursor.id, name=cursor.name, _class=cursor._class, 
+                               bold=cursor.bold, italic=cursor.italic, underline=cursor.underline, 
+                               blink=cursor.blink, reverse=cursor.reverse, crossed=cursor.crossed)
+        if type(cursor) == type(Text('')) and cursor.bg == not_bg and cursor.fg != not_fg:
+            cursor = Text(cursor.text, bg=self.bg, fg=cursor.fg,
+                               id=cursor.id, name=cursor.name, _class=cursor._class, 
+                               bold=cursor.bold, italic=cursor.italic, underline=cursor.underline, 
+                               blink=cursor.blink, reverse=cursor.reverse, crossed=cursor.crossed)
+        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg != not_bg:
+            cursor = Text(cursor.text, fg=self.fg, bg=cursor.bg, 
+                               id=cursor.id, name=cursor.name, _class=cursor._class, 
+                               bold=cursor.bold, italic=cursor.italic, underline=cursor.underline, 
+                               blink=cursor.blink, reverse=cursor.reverse, crossed=cursor.crossed)
+        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg == not_bg:
+            cursor = Text(cursor.text, fg=self.fg, bg=self.bg,
+                               id=cursor.id, name=cursor.name, _class=cursor._class, 
+                               bold=cursor.bold, italic=cursor.italic, underline=cursor.underline, 
+                               blink=cursor.blink, reverse=cursor.reverse, crossed=cursor.crossed)
+        
+        return cursor
         

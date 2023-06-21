@@ -13,18 +13,18 @@ def main():
     Perro5 = 'Labrador'
     Perro6 = 'Pastor Alemán'
     Perro7 = 'Akita'
-    Perro8 = Text('Galgo')
+    Perro8 = Text('Galgo', blink=True)
     Perro9 = Text("Perrito Cool", fg=Colors.BlueViolet, bg=Colors.RosyBrown)
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
     title = Title('Mejores Perritos', fg=Colors.BlueViolet, bg=Colors.RosyBrown)
-    cursor = Text('>>')
+    cursor = Text('>>', blink=True, fg=Colors.red)
     menu1 = Checkboxlist(options, title=title, cursor=cursor, fg=foreground, bg=background)
     # Initialazing Variables
     pointer = 0
     wrap = 2
     keyboard = ''
     selected = Text('')
-    decorator = Text('+')
+    decorator = Text('+', blink=True, bg=Colors.red)
     print(type(Perro9)==type(' '))
     while True:
         clear_screen()

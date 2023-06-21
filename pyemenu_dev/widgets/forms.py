@@ -36,51 +36,20 @@ class Form():
         self.fg_rgb = '\x1b[38;'+setColor(fg)
         self.bg = bg
         self.bg_rgb = '\x1b[48;'+setColor(bg)
-        self.survey = {}
         self.placeholder_fg = placeholder_fg
         self.placeholder_bg = placeholder_bg
-        if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:
-            self.placeholder_fg = fg
-            self.placeholder_bg = bg
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
-        if self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
-            self.placeholder_fg = fg
-            self.placeholder_bg = placeholder_bg
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
-        if self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
-            self.placeholder_fg = placeholder_fg
-            self.placeholder_bg = bg
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
-        if self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
+        self.placeholder_fg, self.placeholder_bg, self.placeholder_fg_rgb, self.placeholder_bg_rgb = Entry.setPlaceholder(self, fg, bg,
+                                                                                                                            placeholder_bg,
+                                                                                                                            placeholder_fg)
         __entries = Form.setEntries(self, entries)
-        self.items2 = __entries
-        self.max_len_item = max(__entries, key = lambda x: x.lenght).lenght+1
+        self.entries = __entries
+        self.max_len_item = max(self.entries, key = lambda x: x.lenght).lenght
         title.width = self.max_len_item
-        if type(cursor) != type(Text('')):
-            self.cursor = Text(str(cursor), fg=fg, bg=bg)
-        if type(cursor) == type(Text('')) and cursor.bg == not_bg and cursor.fg != not_fg:
-            self.cursor = Text(cursor.text, bg=bg, fg=cursor.fg)
-        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg != not_bg:
-            self.cursor = Text(cursor.text, fg=fg, bg=cursor.bg)
-        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg == not_bg:
-            self.cursor = Text(cursor.text, fg=fg, bg=bg)
-
-        if type(title) != type(Title('')):
-            self.title = Title(str(title), fg=fg, bg=bg)
-        if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
-            self.title = Title(title.text, bg=bg, fg=title.fg)
-        if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
-            self.title = Title(title.text, fg=fg, bg=title.bg)
-        if type(title) == type(Title('')) and title.fg == not_fg and title.bg == not_bg:
-            self.title = Title(title.text, fg=fg, bg=bg)
+        self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
+        self.survey = {entry.text:entry.value for entry in self.entries}
+        self.cursor = Text.setText(self, cursor)
+        self.title = Title.setTitle(self, title)
         
-        #__values = [Text(str(entry[1].text)) for entry in self.entries]
-        #self.max_len_values = max(__values, key = lambda x: x.lenght).lenght+1
 
     def print(self,
             pointer: int = 0,
@@ -88,8 +57,8 @@ class Form():
             wrap: int=1,
             highlight: bool = False,
             fg_hl = Colors.white,
-            bg_gl = Colors.Lime, 
-            title_decorator: str= '',
+            bg_hl = Colors.Lime, 
+            title_decorator: str= ' ',
             title_align: str='center',
             padding_up: bool = False,
             padding_bottom: bool = False, 
@@ -111,17 +80,14 @@ class Form():
         new_line_up: bool = False -> add a new line above title
         new_line_bottom: bool = False -> add a new line behind title
         """
-        __values = [Text(str(entry[1].text)) for entry in self.entries]
-        self.max_len_values = max(__values, key = lambda x: x.lenght).lenght
-        block_width = 7+self.cursor.lenght+self.max_len_item+self.max_len_values
+        
         if keyboard == key.SPACE:
                     clear_screen()
-                    print("Type New Value")
-                    print(f"Previous Value: {self.entries[pointer][1].styled}")
-                    new_value = input("Input: ")
-                    self.entries[pointer][1] = Text(new_value, fg=self.entries[pointer][1].fg, bg=self.entries[pointer][1].bg)
-                    self.survey[self.entries[pointer][0].text] = new_value
+                    self.entries[pointer].onSelect()
                     clear_screen()
+        self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
+        block_width = 7+self.cursor.lenght+self.max_len_item+self.max_len_values
+        self.survey = {entry.text:entry.value for entry in self.entries}
         if padding_up:
             print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
         if self.title.text != '':
@@ -135,33 +101,34 @@ class Form():
             if pointer == self.entries.index(item):
                 
                 if highlight:
-                    it_hl = Text(item[0].text, fg=fg_hl, bg=bg_gl)
-                    mk_hl = Text(item[1].text, fg=fg_hl, bg=bg_gl)
+                    it_hl = Entry(item.text, item.id, item.value, item.validation, item.name,
+                                  item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
+                                  item.italic, item.underline, item.blink, item.reverse, item.crossed)
                     print(
                         f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
-                        +f"{it_hl.bg_rgb} {it_hl.styled}{it_hl.bg_rgb} "\
-                        +f"{(self.max_len_item-len(item[0].text))*' '}"\
+                        +f"{it_hl.styled_text}"\
+                        +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
                         +f"{it_hl.fg_rgb}:"\
-                        +f"{mk_hl.bg_rgb} {mk_hl.styled}{mk_hl.bg_rgb} "\
-                        +f"{(self.max_len_values-len(item[1].text))*' '}",
+                        +f"{it_hl.styled_value}"\
+                        +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
                         end="")
                 else:
                     print(
                         f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
-                        +f"{item[0].bg_rgb} {item[0].styled}{item[0].bg_rgb} "\
-                        +f"{(self.max_len_item-len(item[0].text))*' '}"\
-                        +f"{item[0].fg_rgb}:"\
-                        +f"{item[1].bg_rgb} {item[1].styled}{item[1].bg_rgb} "\
-                        +f"{(self.max_len_values-len(item[1].text))*' '}", 
+                        +f"{item.styled_text}"\
+                        +f"{item.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                        +f"{item.fg_rgb}:"\
+                        +f"{item.styled_value}"\
+                        +f"{item.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}", 
                         end="")
             else:
                 print(
-                    f"{item[0].bg_rgb} {' '*(len(self.cursor.text))}{item[0].bg_rgb} "\
-                    +f"{item[0].bg_rgb} {item[0].styled}{item[0].bg_rgb} "\
-                    +f"{(self.max_len_item-len(item[0].text))*' '}"\
-                    +f"{item[0].fg_rgb}:"\
-                    +f"{item[1].bg_rgb} {item[1].styled}{item[1].bg_rgb} "\
-                    +f"{(self.max_len_values-len(item[1].text))*' '}", 
+                    f"{self.cursor.bg_rgb} {' '*(len(self.cursor.text))}{self.cursor.bg_rgb} "\
+                    +f"{item.styled_text}"\
+                    +f"{item.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                    +f"{item.fg_rgb}:"\
+                    +f"{item.styled_value}{item.placeholder_bg_rgb}"\
+                    +f"\x1b[48;{setColor(item._placeholder_bg)}{(self.max_len_values-item._len_value)*' '}", 
                     end="")
 
         empty_blocks = int(math.ceil(len(self.entries)/wrap)*wrap)-len(self.entries)
@@ -173,12 +140,14 @@ class Form():
             print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
         
         print(f"{nf}")
+        print(f"{nf}")
 
     def setEntries(self, entries):
         __entries = []
         for entry in entries:
             if type(entry) not in [type(Text('')), type(Entry('')), type(Checkbox(''))]:
-                entry = Entry(str(entry))
+                entry = Entry(str(entry), value=' ', validation='all',fg=self.fg, bg=self.bg, 
+                              placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg)
             if type(entry) in [type(Text('')), type(Entry('')), type(Checkbox(''))]:
                 if entry.bg == not_bg and entry.fg==not_fg:
                     print(f"{entry.text} verificacion 1")
@@ -187,47 +156,42 @@ class Form():
                 elif entry.bg != not_bg and entry.fg==not_fg:
                     print(f"{entry.text} verificacion 2")
                     entry.fg = self.fg
-                    entry.bg = entry.bg
                 elif entry.bg == not_bg and entry.fg!=not_fg:
                     print(f"{entry.text} verificacion 3")
                     entry.bg = self.bg
-                    entry.fg = entry.fg
-                else:
-                    print(f"{entry.text} verificacion 4")
-                    entry.bg = entry.bg
-                    entry.fg = entry.fg
+
                 
                 if type(entry) == type(Text('')):
                     entry = Entry(entry.text, entry.id, ' ', 'all', entry.name, entry._class,
-                                entry.fg, entry.bg, entry.fg, entry.bg, entry.bold, entry.italic, 
+                                entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
                 elif type(entry) == type(Checkbox('')):
                     entry = Entry(entry.text, entry.id, ' ', 'checkbox', entry.name, entry._class,
-                                entry.fg, entry.bg, entry.fg, entry.bg, entry.bold, entry.italic, 
+                                entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
                 elif type(entry) == type(Entry('')):
-                    if entry.placeholder_bg == not_bg and entry.placeholder_fg == not_fg:
+                    if entry._placeholder_bg == not_bg and entry._placeholder_fg == not_fg:
                         print(f"{entry.text} verificacion 5")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
                                 entry.fg, entry.bg, self.placeholder_fg, self.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                    elif entry.placeholder_bg != not_bg and entry.placeholder_fg == not_fg:
+                    elif entry._placeholder_bg != not_bg and entry._placeholder_fg == not_fg:
                         print(f"{entry.text} verificacion 6")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
-                                entry.fg, entry.bg, entry.placeholder_fg, self.placeholder_bg, 
+                                entry.fg, entry.bg, entry.placeholder_fg, entry._placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                    elif entry.placeholder_bg == not_bg and entry.placeholder_fg != not_fg:
+                    elif entry._placeholder_bg == not_bg and entry._placeholder_fg != not_fg:
                         print(f"{entry.text} verificacion 7")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
                                 entry.fg, entry.bg, entry.placeholder_fg, self.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
-                    elif entry.placeholder_bg != not_bg and entry.placeholder_fg != not_fg:
+                    elif entry._placeholder_bg != not_bg and entry._placeholder_fg != not_fg:
                         print(f"{entry.text} verificacion 8")
                         entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
-                                entry.fg, entry.bg, entry.placeholder_fg, entry.placeholder_bg, 
+                                entry.fg, entry.bg, entry._placeholder_fg, entry._placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
                     

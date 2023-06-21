@@ -36,40 +36,34 @@ class Checkboxlist():
         self.bg = bg
         self.bg_rgb = '\x1b[48;'+setColor(bg)
         self.choices = []
-        if type(cursor) != type(Text('')):
-            self.cursor = Text(str(cursor), fg=fg, bg=bg)
-        if type(cursor) == type(Text('')) and cursor.fg != not_fg and cursor.bg != not_bg:
-            self.cursor = Text(cursor.text, fg=cursor.fg, bg=cursor.bg)
-        if type(cursor) == type(Text('')) and cursor.bg == not_bg and cursor.fg != not_fg:
-            self.cursor = Text(cursor.text, bg=bg, fg=cursor.fg)
-        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg != not_bg:
-            self.cursor = Text(cursor.text, fg=fg, bg=cursor.bg)
-        if type(cursor) == type(Text('')) and cursor.fg == not_fg and cursor.bg == not_bg:
-            self.cursor = Text(cursor.text, fg=fg, bg=bg)
-
-        if type(title) != type(Title('')):
-            self.title = Title(str(title), fg=fg, bg=bg)
-        if type(title) == type(Title('')) and title.bg != not_bg and title.fg != not_fg:
-            self.title = Title(title.text, bg=title.bg, fg=title.fg)
-        if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
-            self.title = Title(title.text, bg=bg, fg=title.fg)
-        if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
-            self.title = Title(title.text, fg=fg, bg=title.bg)
-        if type(title) == type(Title('')) and title.fg == not_fg and title.bg == not_bg:
-            self.title = Title(title.text, fg=fg, bg=bg)
+        self.cursor = Text.setText(self, cursor)
+        self.title = Title.setTitle(self, title)
+        
 
         self.items = []
         for item in items:
             if type(item) != type(Text('')):
                 item = Checkbox(str(item), fg=fg, bg=bg)
             if type(item) == type(Text('')) and item.bg != not_bg and item.fg != not_fg:
-                item = Checkbox(item.text, fg=item.fg, bg=item.bg)
+                item = Checkbox(item.text, fg=item.fg, bg=item.bg,
+                                id=item.id, name=item.name, _class=item._class, 
+                                bold=item.bold, italic=item.italic, underline=item.underline, 
+                                blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             if type(item) == type(Text('')) and item.bg == not_bg and item.fg != not_fg:
-                item = Checkbox(item.text, bg=bg, fg=item.fg)
+                item = Checkbox(item.text, bg=bg, fg=item.fg,
+                                id=item.id, name=item.name, _class=item._class, 
+                                bold=item.bold, italic=item.italic, underline=item.underline, 
+                                blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             if type(item) == type(Text('')) and item.fg == not_fg and item.bg != not_bg:
-                item = Checkbox(item.text, fg=fg, bg=item.bg)
+                item = Checkbox(item.text, fg=fg, bg=item.bg,
+                                id=item.id, name=item.name, _class=item._class, 
+                                bold=item.bold, italic=item.italic, underline=item.underline, 
+                                blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             if type(item) == type(Text('')) and item.fg == not_fg and item.bg == not_bg:
-                item = Checkbox(item.text, fg=fg, bg=bg)
+                item = Checkbox(item.text, fg=fg, bg=bg,
+                                id=item.id, name=item.name, _class=item._class, 
+                                bold=item.bold, italic=item.italic, underline=item.underline, 
+                                blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             
             self.items.append(item)
 
@@ -80,7 +74,7 @@ class Checkboxlist():
             highlight: bool = False,
             fg_hl = Colors.white,
             bg_hl = Colors.Lime, 
-            title_decorator: str= '',
+            title_decorator: str= ' ',
             title_align: str='center',
             padding_up: bool = False,
             padding_bottom: bool = False, 

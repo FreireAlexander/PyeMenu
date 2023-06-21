@@ -37,36 +37,43 @@ class Entry(Text):
         self.validation = validation
         self._text = ' '+label+' '
         self._lenght = len(self._text)
-        self.placeholder_fg = placeholder_fg
-        self.placeholder_bg = placeholder_bg
-        if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:
-            self.placeholder_fg = fg
-            self.placeholder_bg = bg
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
-        if self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
-            self.placeholder_fg = fg
-            self.placeholder_bg = placeholder_bg
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(self.placeholder_bg)
-        if self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
-            self.placeholder_fg = placeholder_fg
-            self.placeholder_bg = bg
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(self.placeholder_fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
-        if self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
-            self.placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
-            self.placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
         
+        self._placeholder_fg = placeholder_fg
+        self._placeholder_bg = placeholder_bg
+        self.placeholder_fg, self.placeholder_bg, self.placeholder_fg_rgb, self.placeholder_bg_rgb = Entry.setPlaceholder(self, fg, bg,
+                                                                                                                            placeholder_bg,
+                                                                                                                            placeholder_fg)        
         self.styled_text = Text.style(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
         self.value = value
         self._value = ' '+value+' '
-        self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, bold, italic, underline, blink, reverse, crossed)
+        self.styled_value = Text.style(self, self._value, self._placeholder_fg, self._placeholder_bg, bold, italic, underline, blink, reverse, crossed)
         self._len_value = len(self.value)
         self.print_label = f"{self.styled_text}{self.bg_rgb} "+"\x1b[0m"
         self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
         self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value
         
+    def setPlaceholder(self, fg, bg, placeholder_bg, placeholder_fg):
+        if placeholder_bg == not_bg and placeholder_fg == not_fg:
+            placeholder_fg = fg
+            placeholder_bg = bg
+            placeholder_fg_rgb = '\x1b[38;'+setColor(self.fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(self.bg)
+        if placeholder_bg != not_bg and placeholder_fg == not_fg:
+            placeholder_fg = fg
+            placeholder_bg = placeholder_bg
+            placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(placeholder_bg)
+        if placeholder_bg == not_bg and placeholder_fg != not_fg:
+            placeholder_fg = placeholder_fg
+            placeholder_bg = bg
+            placeholder_fg_rgb = '\x1b[38;'+setColor(placeholder_fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
+        if placeholder_bg != not_bg and placeholder_fg != not_fg:
+            placeholder_fg_rgb = '\x1b[38;'+setColor(fg)
+            placeholder_bg_rgb = '\x1b[48;'+setColor(bg)
+        
+        return placeholder_fg, placeholder_bg, placeholder_fg_rgb, placeholder_bg_rgb
+    
     
     def onSelect(self):
         if self.validation == 'password':
@@ -76,6 +83,7 @@ class Entry(Text):
                 print('ERROR', error)
             self.value = value
             self._value = " "+f"{len(value)*'*'}"+" "
+            self._len_value = len(self.value)
             self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
                                         self.italic, self.underline, self.blink, self.reverse, self.crossed)
             self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
@@ -121,6 +129,7 @@ class Entry(Text):
                     value = input("Type new value: ")
 
             self.value = value
+            self._len_value = len(self.value)
             self._value = ' '+str(value)+' '
             self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
                                         self.italic, self.underline, self.blink, self.reverse, self.crossed)

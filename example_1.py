@@ -24,7 +24,7 @@ def main():
     wrap = 4
     keyboard = ''
     selected = Text('')
-    decorator = Text('+')
+    decorator = Text('+', bg=Colors.WhiteSmoke, blink=True)
     while True:
         clear_screen()
         
@@ -33,7 +33,7 @@ def main():
                     wrap=wrap,
                     highlight=True,
                     fg_hl=Colors.black, 
-                    bg_gl=Colors.LimeGreen,
+                    bg_hl=Colors.LimeGreen,
                     title_decorator=decorator,
                     title_align='center',
                     title_padding_bottom=True,

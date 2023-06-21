@@ -46,27 +46,8 @@ class Title(Text):
         new_line_up: bool = False -> add a new line above title
         new_line_bottom: bool = False -> add a new line behind title
         """
-        if type(decorator) != type(Text('')):
-            decorator = Text(str(decorator), fg=self.fg, bg=self.bg)
-        if type(decorator) == type(Text('')) and decorator.bg != not_bg and decorator.fg != not_fg:
-            decorator = Text(decorator.text, bg=decorator.bg, fg=decorator.fg)
-        if type(decorator) == type(Text('')) and decorator.bg == not_bg and decorator.fg != not_fg:
-            decorator = Text(decorator.text, bg=self.bg, fg=decorator.fg)
-        if type(decorator) == type(Text('')) and decorator.fg == not_fg and decorator.bg != not_bg:
-            decorator = Text(decorator.text, fg=self.fg, bg=decorator.bg)
-        if type(decorator) == type(Text('')) and decorator.fg == not_fg and decorator.bg == not_bg:
-            decorator = Text(decorator.text, fg=self.fg, bg=self.bg)
-        spaces = (width-self._lenght)
-        if type(decorator)==type('str'):
-            if align == 'center':
-                if spaces%2==0:
-                    title_text = f"{spaces//2*decorator}"+f"{self.text}"+f"{spaces//2*decorator}"
-                else:
-                    title_text = f"{(spaces//2+1)*decorator}"+f"{self.styled}"+f"{spaces//2*decorator}"
-            if align == 'right':
-                title_text = f"{spaces*decorator}"+f"{self.styled}"
-            if align == 'left':
-                title_text = f"{self.styled}"+f"{spaces*decorator}"   
+        decorator = Text.setText(self, decorator)
+        spaces = (width-self._lenght)  
         if type(decorator)==type(Text('')):
             if align == 'center':
                 if spaces%2==0:
@@ -92,4 +73,30 @@ class Title(Text):
         else: print(title_text, end='')
 
         print('\x1b[0m', end='')
+
+    def setTitle(self, title):
+        if type(title) != type(Title('')):
+            title = Title(str(title), fg=self.fg, bg=self.bg)
+        if type(title) == type(Title('')) and title.bg != not_bg and title.fg != not_fg:
+            title = Title(title.text, bg=title.bg, fg=title.fg, 
+                               id=title.id, name=title.name, _class=title._class, 
+                               bold=title.bold, italic=title.italic, underline=title.underline, 
+                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+        if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
+            title = Title(title.text, bg=self.bg, fg=title.fg, 
+                               id=title.id, name=title.name, _class=title._class, 
+                               bold=title.bold, italic=title.italic, underline=title.underline, 
+                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+        if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
+            title = Title(title.text, fg=self.fg, bg=title.bg,
+                               id=title.id, name=title.name, _class=title._class, 
+                               bold=title.bold, italic=title.italic, underline=title.underline, 
+                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+        if type(title) == type(Title('')) and title.fg == not_fg and title.bg == not_bg:
+            title = Title(title.text, fg=self.fg, bg=self.bg,
+                               id=title.id, name=title.name, _class=title._class, 
+                               bold=title.bold, italic=title.italic, underline=title.underline, 
+                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+        
+        return title
 
