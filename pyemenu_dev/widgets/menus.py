@@ -12,6 +12,9 @@ from readchar import key
 from ..components import Text
 from ..components import Title
 from ..colors import Colors, setColor
+from ..tools import setCursor, getKeyboard, clear_screen
+from readchar import key
+from os import get_terminal_size
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'
@@ -52,8 +55,6 @@ class Menu():
             self.options.append(option)
 
     def print(self,
-            pointer: int = 0,
-            keyboard = '',
             wrap: int=1,
             highlight: bool = False,
             fg_hl = Colors.white,
@@ -80,47 +81,67 @@ class Menu():
         new_line_up: bool = False -> add a new line above title
         new_line_bottom: bool = False -> add a new line behind title
         """
-        block_width = 4+self.cursor.lenght+self.max_len_option
-        if padding_up:
-            print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}")
-        if self.title.text != '':
-            self.title.print_title(title_align, title_decorator, 
-                                    block_width*wrap, 
-                                    title_padding_up, 
-                                    title_padding_bottom)
-        for option in self.options:
+        pointer = 0
+        selected = None
+        keyboard = None
+        while True:
+            clear_screen()
+            block_width = 4+self.cursor.lenght+self.max_len_option
+            cols, rows = get_terminal_size()
+            while block_width*wrap>cols:
+                wrap -=1
             
-            if self.options.index(option) % wrap == 0:
-                print("")
-            if pointer == self.options.index(option):
-                self.selected = option
-                if keyboard == key.ENTER:
+            if wrap <0:
+                wrap = 1
+            
+            if padding_up:
+                print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}")
+            if self.title.text != '':
+                self.title.print_title(title_align, title_decorator, 
+                                        block_width*wrap, 
+                                        title_padding_up, 
+                                        title_padding_bottom)
+            for option in self.options:
+                
+                if self.options.index(option) % wrap == 0:
+                    print("")
+                if pointer == self.options.index(option):
                     self.selected = option
-                if highlight:
-                    op_hl = Text(option.text, fg=fg_hl, bg=bg_hl)
-                    print(
-                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
-                        +f"{op_hl.bg_rgb} {op_hl.styled}{op_hl.bg_rgb} "\
-                        +f"{(self.max_len_option-len(option.text))*' '}", 
-                        end="")
+                    if keyboard == key.ENTER:
+                        self.selected = option
+                    if highlight:
+                        op_hl = Text(option.text, fg=fg_hl, bg=bg_hl)
+                        print(
+                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                            +f"{op_hl.bg_rgb} {op_hl.styled}{op_hl.bg_rgb} "\
+                            +f"{(self.max_len_option-len(option.text))*' '}", 
+                            end="")
+                    else:
+                        print(
+                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "
+                            +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
+                            +f"{(self.max_len_option-len(option.text))*' '}", 
+                            end="")
+                    
                 else:
                     print(
-                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "
+                        f"{self.cursor.bg_rgb} {self.cursor.lenght*' '}{self.cursor.bg_rgb} "\
                         +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
                         +f"{(self.max_len_option-len(option.text))*' '}", 
                         end="")
-                
-            else:
-                print(
-                    f"{self.cursor.bg_rgb} {self.cursor.lenght*' '}{self.cursor.bg_rgb} "\
-                    +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
-                    +f"{(self.max_len_option-len(option.text))*' '}", 
-                    end="")
 
-        empty_blocks = int(math.ceil(len(self.options)/wrap)*wrap)-len(self.options)
-        if empty_blocks != 0:
-            for i in range(empty_blocks):
-                print(f"{self.bg_rgb}{(block_width)*' '}", end='')
-        if padding_bottom:
-            print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}", end='')
-        print(f"{nf}")
+            empty_blocks = int(math.ceil(len(self.options)/wrap)*wrap)-len(self.options)
+            if empty_blocks != 0:
+                for i in range(empty_blocks):
+                    print(f"{self.bg_rgb}{(block_width)*' '}", end='')
+            if padding_bottom:
+                print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}", end='')
+            print(f"{nf}")
+
+            keyboard = getKeyboard()
+            pointer = setCursor(keyboard, pointer, self.options, wrap)
+            if keyboard in ["q", "Q"]:
+                return None
+            if keyboard == key.ENTER:
+                selected = self.selected
+                return selected

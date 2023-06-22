@@ -19,7 +19,7 @@ DOWN    = key.DOWN
 LEFT    = key.LEFT
 RIGHT   = key.RIGHT
 SPACE   = key.SPACE
-input_info = """Press ENTER to select an option\nPress SPACE to edit or mark an item"""
+input_info = """Press ENTER to select an option"""
 input_exit = """Press (q) to exit"""
 
 # Os.clear functions

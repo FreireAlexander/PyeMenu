@@ -28,7 +28,7 @@ class Checkbox(Text):
                 bold, italic, underline, blink, reverse, crossed)
         self._text = ' '+label+' '
         self._lenght = len(self._text)
-        self.styled = Text.style(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
+        self.styled = Text.setStyle(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
         self.box = box
         self.print = f"{self.bg_rgb}{self.fg_rgb} [{self.box}{self.bg_rgb}]"\
                     +f"{self.bg_rgb}{self.styled}{self.bg_rgb} "\

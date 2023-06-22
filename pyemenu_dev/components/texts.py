@@ -47,10 +47,10 @@ class Text():
         self.reverse = reverse
         self.crossed = crossed
         self.lenght = len(self.text)
-        self.styled = Text.style(self, self.text, self.fg, self.bg, 
+        self.styled = Text.setStyle(self, self.text, self.fg, self.bg, 
                                 self.bold, self.italic, self.underline, self.blink, self.reverse, self.crossed)
 
-    def style(self, chars, fg: str = not_fg, bg: str = not_bg,
+    def setStyle(self, chars, fg: str = not_fg, bg: str = not_bg,
                 bold: bool = False, italic: bool = False, underline: bool = False,
                 blink: bool = False, reverse: bool = False, crossed: bool = False):
             result = chars

@@ -28,7 +28,7 @@ class Title(Text):
                 bold, italic, underline, blink, reverse, crossed)
         self.title_text = ' '+text+' '
         self._lenght = len(self.title_text)
-        self.styled = Text.style(self, self.title_text, self.fg, self.bg, 
+        self.styled = Text.setStyle(self, self.title_text, self.fg, self.bg, 
                                  self.bold, self.italic, self.underline, self.blink, self.reverse, self.crossed)
         
     

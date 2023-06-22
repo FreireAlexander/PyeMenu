@@ -41,10 +41,10 @@ class Entry(Text):
         self.placeholder_fg = placeholder_fg
         self.placeholder_bg = placeholder_bg
         Entry.setPlaceholder(self)     
-        self.styled_text = Text.style(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
+        self.styled_text = Text.setStyle(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
         self.value = value
         self._value = ' '+value+' '
-        self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, bold, italic, underline, blink, reverse, crossed)
+        self.styled_value = Text.setStyle(self, self._value, self.placeholder_fg, self.placeholder_bg, bold, italic, underline, blink, reverse, crossed)
         self._len_value = len(self.value)
         self.print_label = f"{self.styled_text}{self.bg_rgb} "+"\x1b[0m"
         self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
@@ -96,7 +96,7 @@ class Entry(Text):
             self.value = value
             self._value = " "+f"{len(value)*'*'}"+" "
             self._len_value = len(self.value)
-            self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
+            self.styled_value = Text.setStyle(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
                                         self.italic, self.underline, self.blink, self.reverse, self.crossed)
             self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
             self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value
@@ -143,7 +143,7 @@ class Entry(Text):
             self.value = value
             self._len_value = len(self.value)
             self._value = ' '+str(value)+' '
-            self.styled_value = Text.style(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
+            self.styled_value = Text.setStyle(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
                                         self.italic, self.underline, self.blink, self.reverse, self.crossed)
             self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
             self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value
