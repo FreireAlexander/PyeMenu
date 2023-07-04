@@ -12,5 +12,5 @@
 from .tools import clear_screen, getKeyboard, setCursor
 from .tools import ENTER, UP, DOWN, LEFT, RIGHT, SPACE
 from .colors import Colors, html_rgb_fg, html_rgb_bg
-from .components import Checkbox, Entry, Text, Title
+from .components import Checkbox, Entry, Text, Title, Button
 from .widgets import Checkboxlist, Form, Menu

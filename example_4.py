@@ -1,7 +1,15 @@
 import pyemenu_dev as pyemenu 
-from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox
+from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox, Button
 from pyemenu_dev import getKeyboard, setCursor, clear_screen
 from readchar import key
+
+
+def random_number(texto):
+    import random
+
+    print(random.randint(10, 2000))
+    print(f"El texto es una cosa {texto}")
+
 
 def main():
     foreground = Colors.BlueViolet
@@ -20,6 +28,7 @@ def main():
                 ]
     title = Title('What is your favorite?', fg=Colors.DarkGreen)
     cursor = Text('>>', fg=Colors.DarkBlue)
+    clear = Button("Clear")
     menu1 = Menu(options, title=title, cursor=cursor, fg=foreground, bg=background)
     value = menu1.print(
                 wrap=3,
@@ -33,8 +42,12 @@ def main():
     
     if value == None:
         print("No has seleccionado nada")
+        print(clear.print)
     else:
         print(f"el valor seleccionado fue: {value}")
+        print(clear.print)
+        clear.onClick = lambda: random_number(menu1.options[2].styled)
+        clear.click()
         print(f"el valor seleccionado fue: {menu1.selected}")
 
 if __name__ == '__main__':
