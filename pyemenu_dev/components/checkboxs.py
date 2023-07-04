@@ -46,4 +46,9 @@ class Checkbox(Text):
             self.print = f"{self.bg_rgb}{self.fg_rgb} [{self.box}{self.bg_rgb}]"\
                     +f"{self.bg_rgb}{self.styled}{self.bg_rgb} "\
                     +"\x1b[0m"
-        
+    
+    def clear(self):
+        self.box = ' '
+        self.print = f"{self.bg_rgb}{self.fg_rgb} [{self.box}{self.bg_rgb}]"\
+                +f"{self.bg_rgb}{self.styled}{self.bg_rgb} "\
+                +"\x1b[0m"

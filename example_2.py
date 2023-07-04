@@ -18,7 +18,7 @@ def main():
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
     title = Title('Mejores Perritos', fg=Colors.BlueViolet, bg=Colors.RosyBrown)
     cursor = Text('>>', blink=True, fg=Colors.red)
-    menu1 = Checkboxlist(options, title=title, cursor=cursor, fg=foreground, bg=background)
+    menu1 = Checkboxlist(options, multiselect=True ,title=title, cursor=cursor, fg=foreground, bg=background)
     # Initialazing Variables
     pointer = 0
     wrap = 2
@@ -49,11 +49,7 @@ def main():
         if keyboard in ["q", "Q"]:
             break
         if keyboard == key.ENTER:
-            try:
-                menu1 = Checkboxlist(selected, title=title, cursor=cursor, fg=foreground, bg=background)
-            except ValueError:
-                print("Te quedaste sin opciones")
-                break
+            break
     
     print(f"Selected Value: {selected}")
     

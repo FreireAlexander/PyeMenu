@@ -23,9 +23,11 @@ class Checkboxlist():
     This class allow to create a CheckBoxList for choice 
     multiple option 
     '''
-    def __init__(self, items: list, 
+    def __init__(self, items: list,
+                multiselect: bool = True, 
                 title: str = '', cursor: str = '-->',
                 fg: str = not_fg, bg: str = not_bg):
+        self.multiselect = multiselect
         __items = [item if type(item)==type(Text('')) else Checkbox(str(item)) for item in items]
         self.max_len_item = len(max(__items, key = lambda x: x.lenght).text)
         title.width = self.max_len_item
@@ -104,18 +106,25 @@ class Checkboxlist():
                 (block_width)*wrap, 
                 title_padding_up, 
                 title_padding_bottom)
+        if keyboard == key.SPACE:
+                    if self.multiselect:
+                        if self.items[pointer].text not in self.choices:
+                            self.items[pointer].onSelect()
+                            self.choices.append(self.items[self.items.index(self.items[pointer])].text)
+                        elif self.items[pointer].text in self.choices:
+                            self.items[pointer].onSelect()
+                            self.choices.remove(self.items[self.items.index(self.items[pointer])].text)
+                    else:
+                        self.items[pointer].onSelect()
+                        for other in self.items:
+                            if other != self.items[pointer]:
+                                other.clear()
+
+                        self.choices = self.items[self.items.index(self.items[pointer])].text
         for item in self.items:
             if self.items.index(item) % wrap == 0:
                 print("")
             if pointer == self.items.index(item):
-                if keyboard == key.SPACE:
-                    if item.text not in self.choices:
-                        item.onSelect()
-                        self.choices.append(self.items[self.items.index(item)].text)
-                    elif item.text in self.choices:
-                        item.onSelect()
-                        self.choices.remove(self.items[self.items.index(item)].text)
-
                 if highlight:
                     it_hl = Checkbox(item.text, item.id, item.box,item.name, item._class, fg_hl, bg_hl,
                                      item.bold, item.italic, item.underline, item.blink, item.reverse, 

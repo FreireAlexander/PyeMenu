@@ -3,8 +3,6 @@ from .texts import Text
 from ..colors import setColor
 
 import getpass
- 
-
 
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
@@ -147,4 +145,12 @@ class Entry(Text):
                                         self.italic, self.underline, self.blink, self.reverse, self.crossed)
             self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
             self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value
-            
+    
+    def clear(self):
+        self.value = " "
+        self._len_value = len(self.value)
+        self._value = ' '+str(self.value)+' '
+        self.styled_value = Text.setStyle(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 
+                                    self.italic, self.underline, self.blink, self.reverse, self.crossed)
+        self.print_value = f"{self.styled_value}{self.placeholder_bg_rgb}"+"\x1b[0m"
+        self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value

@@ -46,6 +46,11 @@ def main():
         pointer = setCursor(keyboard, pointer, menu1.entries, wrap)
         if keyboard in ["q", "Q"]:
             break
+        if keyboard in ["c", "C"]:
+            print(menu1.entries[0].print)
+            menu1.entries[0].clear()
+            print(menu1.entries[0].print)
+            input(f"Press Enter")
     
     print(f"User registered: {survey}")
     

@@ -100,8 +100,8 @@ class Form():
                 
                 if highlight:
                     it_hl = Entry(item.text, item.id, item.value, item.validation, item.name,
-                                  item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
-                                  item.italic, item.underline, item.blink, item.reverse, item.crossed)
+                                item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
+                                item.italic, item.underline, item.blink, item.reverse, item.crossed)
                     if it_hl.validation=='password':
                         print(
                             f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
