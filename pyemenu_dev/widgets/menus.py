@@ -106,9 +106,9 @@ class Menu():
                 if self.options.index(option) % wrap == 0:
                     print("")
                 if pointer == self.options.index(option):
-                    self.selected = option
+                    self.selected = option.text
                     if keyboard == key.ENTER:
-                        self.selected = option
+                        self.selected = option.text
                     if highlight:
                         op_hl = Text(option.text, fg=fg_hl, bg=bg_hl)
                         print(
@@ -141,7 +141,8 @@ class Menu():
             keyboard = getKeyboard()
             pointer = setCursor(keyboard, pointer, self.options, wrap)
             if keyboard in ["q", "Q"]:
-                return None
+                selected = None
+                return selected
             if keyboard == key.ENTER:
                 selected = self.selected
                 return selected

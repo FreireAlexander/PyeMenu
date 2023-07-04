@@ -34,7 +34,8 @@ def main():
     if value == None:
         print("No has seleccionado nada")
     else:
-        print(f"el valor seleccionado fue: {value.styled}")
+        print(f"el valor seleccionado fue: {value}")
+        print(f"el valor seleccionado fue: {menu1.selected}")
 
 if __name__ == '__main__':
     main()
