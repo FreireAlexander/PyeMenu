@@ -14,7 +14,9 @@ from ..components import Text
 from ..components import Title
 from ..components import Entry
 from ..components import Checkbox
+from ..components import Button
 from ..colors import Colors, setColor
+from copy import deepcopy
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'
@@ -25,7 +27,7 @@ class Form():
     This class allow to create a CheckBoxList for choice 
     multiple option 
     '''
-    def __init__(self, entries: list, 
+    def __init__(self, entries: list, buttons = ['clear', 'submit', 'exit'],
                 title: str = '', cursor: str = '-->',
                 fg: str = not_fg, bg: str = not_bg,
                 placeholder_fg: str = not_fg, placeholder_bg: str = not_bg):
@@ -39,8 +41,10 @@ class Form():
         self.placeholder_fg = placeholder_fg
         self.placeholder_bg = placeholder_bg
         self.placeholder_fg, self.placeholder_bg = Form.setPlaceholder(self)
-        __entries = Form.setEntries(self, entries)
-        self.entries = __entries
+        self.entries = Form.setEntries(self, entries)
+        self.buttons = Form.setButtons(self, buttons)
+        self.elements = deepcopy(self.entries)
+        self.elements.extend(self.buttons)
         self.max_len_item = max(self.entries, key = lambda x: x.lenght).lenght
         title.width = self.max_len_item
         self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
@@ -61,7 +65,10 @@ class Form():
             padding_up: bool = False,
             padding_bottom: bool = False, 
             title_padding_up: bool = False,
-            title_padding_bottom: bool = False
+            title_padding_bottom: bool = False, 
+            button_focus_bg = Colors.white,
+            button_focus_fg  =  Colors.black,
+            button_focus_blink: bool = False,
             ):
         """
         This Method allow a Menu to be show on screen, it is possible to 
@@ -81,8 +88,9 @@ class Form():
         
         if keyboard == key.SPACE:
                     clear_screen()
-                    self.entries[pointer].onSelect()
-                    clear_screen()
+                    if pointer in range(len(self.entries)):
+                        self.entries[pointer].onSelect()
+                        clear_screen()
         self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
         block_width = 7+self.cursor.lenght+self.max_len_item+self.max_len_values
         self.survey = {entry.text:entry.value for entry in self.entries}
@@ -150,6 +158,17 @@ class Form():
         print(f"{nf}")
         print(f"{nf}")
 
+        for button in self.buttons:
+            if self.buttons.index(button) % wrap == 0:
+                print("")
+            if pointer == self.elements.index(button):
+                print(button.print_focus, end='')
+            else:
+                print(button.print, end='')
+        
+        print(f"{nf}")
+        print(f"{nf}")
+
     def setEntries(self, entries):
         __entries = []
         for entry in entries:   
@@ -201,6 +220,26 @@ class Form():
             __entries.append(entry)
 
         return __entries
+
+    def setButtons(self, buttons):
+        __buttons = []
+        for button in buttons:   
+            if type(button) == type(Button(' ')):
+                if button.bg == not_bg and button.fg == not_fg:
+                    button.bg = self.bg
+                    button.fg = self.fg
+                elif button.bg != not_bg and button.fg == not_fg:
+                    button.fg = self.fg
+                elif button.bg == not_bg and button.fg != not_fg:
+                    button.bg = self.bg
+            else:
+                print(button)
+                print(f"{button} porque era un texto")
+                button = Button(str(button))        
+                
+            __buttons.append(button)
+
+        return __buttons
     
     def setPlaceholder(self):
         if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:

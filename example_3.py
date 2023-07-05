@@ -1,5 +1,5 @@
 import pyemenu_dev as pyemenu 
-from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox
+from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox, Button
 from pyemenu_dev import getKeyboard, setCursor, clear_screen
 from readchar import key
 
@@ -14,13 +14,15 @@ def main():
     credit = Checkbox('Card')
     password = Entry('Password', validation='password',
                  bg=Colors.yellow, placeholder_fg=Colors.red)    
-    options = [name, surname, last_name, age, credit,password]
+    options = [name, surname, last_name, age,password]
     title = Title('New User')
     cursor = Text('~>')
     clear_screen()
     print("Aqui empieza lo del while ")
+    Enter = Button('Enter', bg=Colors.BurlyWood)
     menu1 = Form(options, title=title, cursor=cursor, fg=foreground, bg=background,
-                 placeholder_fg=Colors.DarkBlue, placeholder_bg=Colors.DimGray)
+                 placeholder_fg=Colors.DarkBlue, placeholder_bg=Colors.DimGray,
+                 )
     # Initialazing Variables
     pointer = 0
     wrap = 2
@@ -38,12 +40,13 @@ def main():
                     padding_bottom=True,
                     padding_up=True
                     )
+        print(Enter.print)
         survey = menu1.survey
         print(f"Max len item: {menu1.max_len_item}")
         print(f"Max len Value: {menu1.max_len_values}")
         
         keyboard = getKeyboard()
-        pointer = setCursor(keyboard, pointer, menu1.entries, wrap)
+        pointer = setCursor(keyboard, pointer, menu1.elements, wrap)
         if keyboard in ["q", "Q"]:
             break
         if keyboard in ["c", "C"]:

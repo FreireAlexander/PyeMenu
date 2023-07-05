@@ -1,4 +1,5 @@
 from .texts import Text
+from ..colors import Colors
 
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
@@ -28,8 +29,10 @@ class Button(Text):
                 bold, italic, underline, blink, reverse, crossed)
         self._text = ' '+label+' '
         self._lenght = len(self._text)
-        self.styled = Text.setStyle(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
-        self.print = f"{self.bg_rgb}{self.styled}{self.bg_rgb} "+"\x1b[0m"
+        self.noFocus = Text.setStyle(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
+        self.print = f"{self.bg_rgb}{self.noFocus}{self.bg_rgb} "+"\x1b[0m"
+        self.focus = Text.setStyle(self, self._text, self.fg, Colors.GreenYellow, bold, italic, underline, blink, reverse, crossed)
+        self.print_focus =  f"{self.bg_rgb}{self.focus}{self.bg_rgb} "+"\x1b[0m"
         self.onClick = None
 
     def click(self):
