@@ -19,7 +19,7 @@ def main():
     cursor = Text('~>')
     clear_screen()
     print("Aqui empieza lo del while ")
-    Enter = Button('Enter', bg=Colors.BurlyWood)
+    Enter = Button('El boton con el texto mas largo del mundo', bg=Colors.BurlyWood)
     menu1 = Form(options, title=title, cursor=cursor, fg=foreground, bg=background,
                  placeholder_fg=Colors.DarkBlue, placeholder_bg=Colors.DimGray,
                  )

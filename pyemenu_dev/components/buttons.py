@@ -1,5 +1,5 @@
 from .texts import Text
-from ..colors import Colors
+from ..colors import Colors, html_rgb_bg
 
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
@@ -30,9 +30,10 @@ class Button(Text):
         self._text = ' '+label+' '
         self._lenght = len(self._text)
         self.noFocus = Text.setStyle(self, self._text, self.fg, self.bg, bold, italic, underline, blink, reverse, crossed)
-        self.print = f"{self.bg_rgb}{self.noFocus}{self.bg_rgb} "+"\x1b[0m"
+        self.print = f"{self.noFocus}"
         self.focus = Text.setStyle(self, self._text, self.fg, Colors.GreenYellow, bold, italic, underline, blink, reverse, crossed)
-        self.print_focus =  f"{self.bg_rgb}{self.focus}{self.bg_rgb} "+"\x1b[0m"
+        self.focus_bg_rgb = html_rgb_bg(Colors.GreenYellow)
+        self.print_focus =  f"{self.focus}"
         self.onClick = None
 
     def click(self):

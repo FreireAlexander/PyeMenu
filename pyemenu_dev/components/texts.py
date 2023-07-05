@@ -1,4 +1,4 @@
-from ..colors import setColor
+from ..colors import setColor, html_rgb_bg, html_rgb_fg
 
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
@@ -37,9 +37,9 @@ class Text():
             self._class = str(_class)
         self._class = _class
         self.fg = fg
-        self.fg_rgb = '\x1b[38;'+setColor(fg)
+        self.fg_rgb = html_rgb_fg(fg)
         self.bg = bg
-        self.bg_rgb = '\x1b[48;'+setColor(bg)
+        self.bg_rgb = html_rgb_bg(bg)
         self.bold = bold
         self.italic = italic
         self.blink = blink
