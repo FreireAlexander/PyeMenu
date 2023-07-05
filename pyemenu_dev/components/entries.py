@@ -128,10 +128,10 @@ class Entry(Text):
                     print("OOps it's not email")
                     value = input("Type email again: ")
             elif self.validation == 'checkbox':
-                if self.value == ' ':
+                if self.value == '':
                     value = 'x'
                 else:
-                    value = ' '
+                    value = ''
             else:
                 value = input("Type new value: ")
                 while self.validation(value) == False:
@@ -147,7 +147,7 @@ class Entry(Text):
             self.print = self.print_label + f"{self.bg_rgb}{self.fg_rgb}: " + self.print_value
     
     def clear(self):
-        self.value = " "
+        self.value = ''
         self._len_value = len(self.value)
         self._value = ' '+str(self.value)+' '
         self.styled_value = Text.setStyle(self, self._value, self.placeholder_fg, self.placeholder_bg, self.bold, 

@@ -9,7 +9,7 @@
 # Local Libraries
 import math
 from readchar import key, readchar
-from ..tools import clear_screen
+
 from ..components import Text
 from ..components import Title
 from ..components import Entry
@@ -17,10 +17,26 @@ from ..components import Checkbox
 from ..components import Button
 from ..colors import Colors, setColor
 from copy import deepcopy
+from ..tools import getKeyboard, clear_screen, setCursor
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
+
+def clear_all(form):
+    for entry in form:
+        entry.clear()
+    
+
+def exit_form(self, form):
+    self.exit = True
+    self.survey = {entry.text:' ' for entry in self.entries}
+    return self.exit, self.survey
+
+def submit_survey(self):
+    self.exit = True
+    return self.exit
+
 
 class Form():
     '''
@@ -52,11 +68,15 @@ class Form():
         self.survey = {entry.text:entry.value for entry in self.entries}
         self.cursor = Text.setText(self, cursor)
         self.title = Title.setTitle(self, title)
+        self.exit = False
+        if buttons == ['clear', 'submit', 'exit']:
+            self.buttons[0].onClick = lambda: clear_all(self.entries)
+            self.buttons[1].onClick = lambda: submit_survey(self)
+            self.buttons[2].onClick = lambda: exit_form(self, self.entries)
+        
         
 
     def print(self,
-            pointer: int = 0,
-            keyboard = '',
             wrap: int=1,
             highlight: bool = False,
             fg_hl = Colors.white,
@@ -86,102 +106,129 @@ class Form():
         new_line_up: bool = False -> add a new line above title
         new_line_bottom: bool = False -> add a new line behind title
         """
-        
-        if keyboard == key.SPACE:
-                    if pointer in range(len(self.entries)):
-                        clear_screen()
-                        self.entries[pointer].onSelect()
-                        clear_screen()
-        self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
-        block_width = 7+self.cursor.lenght+self.max_len_item+self.max_len_values
-        self.survey = {entry.text:entry.value for entry in self.entries}
-        if padding_up:
-            print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
-        if self.title.text != '':
-            self.title.print_title(title_align, title_decorator, 
-                (block_width)*wrap, 
-                title_padding_up, 
-                title_padding_bottom)
-        for item in self.entries:
-            if self.entries.index(item) % wrap == 0:
-                print("")
-            if pointer == self.entries.index(item):
-                
-                if highlight:
-                    it_hl = Entry(item.text, item.id, item.value, item.validation, item.name,
-                                item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
-                                item.italic, item.underline, item.blink, item.reverse, item.crossed)
-                    if it_hl.validation=='password':
-                        print(
-                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
-                            +f"{it_hl.styled_text}"\
-                            +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
-                            +f"{it_hl.fg_rgb}:"\
-                            +f" {it_hl._len_value*'*'} "\
-                            +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
-                            end="")
+        # Initialazing Variables
+        pointer = 0
+        keyboard = None
+        while True:
+            clear_screen()
+            if keyboard == key.DELETE:
+                input("Presioné delete")
+            if keyboard == key.BACKSPACE:
+                if pointer in range(len(self.entries)):
+                    clear_screen()
+                    self.entries[pointer].clear()
+                    clear_screen()
+            if keyboard == key.SPACE:
+                if pointer in range(len(self.entries)):
+                    clear_screen()
+                    self.entries[pointer].onSelect()
+                    clear_screen()
+            if keyboard == key.ENTER:
+                if pointer in range(len(self.entries)):
+                    clear_screen()
+                    self.entries[pointer].onSelect()
+                    clear_screen()
+                if pointer in range(len(self.entries), len(self.elements)):
+                    clear_screen()
+                    self.elements[pointer].click()
+                    clear_screen()
+            if keyboard in ["q", "Q"]:
+                break
+            if self.exit == True:
+                break
+            # Maximun Lenght
+            
+            self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
+            block_width = 7+self.cursor.lenght+self.max_len_item+self.max_len_values
+            self.survey = {entry.text:entry.value for entry in self.entries}
+            if padding_up:
+                print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
+            if self.title.text != '':
+                self.title.print_title(title_align, title_decorator, 
+                    (block_width)*wrap, 
+                    title_padding_up, 
+                    title_padding_bottom)
+            for item in self.entries:
+                if self.entries.index(item) % wrap == 0:
+                    print("")
+                if pointer == self.entries.index(item):
+                    
+                    if highlight:
+                        it_hl = Entry(item.text, item.id, item.value, item.validation, item.name,
+                                    item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
+                                    item.italic, item.underline, item.blink, item.reverse, item.crossed)
+                        if it_hl.validation=='password':
+                            print(
+                                f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                                +f"{it_hl.styled_text}"\
+                                +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                                +f"{it_hl.fg_rgb}:"\
+                                +f" {it_hl._len_value*'*'} "\
+                                +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
+                                end="")
+                        else:
+                            print(
+                                f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                                +f"{it_hl.styled_text}"\
+                                +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                                +f"{it_hl.fg_rgb}:"\
+                                +f"{it_hl.styled_value}"\
+                                +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
+                                end="")
                     else:
                         print(
                             f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
-                            +f"{it_hl.styled_text}"\
-                            +f"{it_hl.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
-                            +f"{it_hl.fg_rgb}:"\
-                            +f"{it_hl.styled_value}"\
-                            +f"{it_hl.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}",
+                            +f"{item.styled_text}"\
+                            +f"{item.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
+                            +f"{item.fg_rgb}{item.bg_rgb}:"\
+                            +f"{item.styled_value}{item.placeholder_fg_rgb}"\
+                            +f"{item.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}", 
                             end="")
                 else:
                     print(
-                        f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                        f"{self.cursor.bg_rgb} {' '*(len(self.cursor.text))}{self.cursor.bg_rgb} "\
                         +f"{item.styled_text}"\
                         +f"{item.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
                         +f"{item.fg_rgb}{item.bg_rgb}:"\
                         +f"{item.styled_value}{item.placeholder_fg_rgb}"\
                         +f"{item.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}", 
                         end="")
-            else:
-                print(
-                    f"{self.cursor.bg_rgb} {' '*(len(self.cursor.text))}{self.cursor.bg_rgb} "\
-                    +f"{item.styled_text}"\
-                    +f"{item.bg_rgb}{(self.max_len_item-item.lenght)*' '}"\
-                    +f"{item.fg_rgb}{item.bg_rgb}:"\
-                    +f"{item.styled_value}{item.placeholder_fg_rgb}"\
-                    +f"{item.placeholder_bg_rgb}{(self.max_len_values-item._len_value)*' '}", 
-                    end="")
 
-        empty_blocks = int(math.ceil(len(self.entries)/wrap)*wrap)-len(self.entries)
-        if empty_blocks != 0:
-            for i in range(empty_blocks):
-                print(f"{self.bg_rgb}{((block_width))*' '}", end='')
+            empty_blocks = int(math.ceil(len(self.entries)/wrap)*wrap)-len(self.entries)
+            if empty_blocks != 0:
+                for i in range(empty_blocks):
+                    print(f"{self.bg_rgb}{((block_width))*' '}", end='')
 
-        if padding_bottom:
-            print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
-        
-        print(f"{nf}")
-        print(f"{nf}")
-
-        
-        for button in self.buttons:
-            button_space = 3+self.max_len_values
+            if padding_bottom:
+                print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
             
-            if self.buttons.index(button) % wrap == 0:
-                print("")
-            if pointer == self.elements.index(button):
-                print(
-                    f" {' '*(len(self.cursor.text))} "\
-                    +f"{button.print_focus}"\
-                    +f"{button.focus_bg_rgb}{(self.max_len_item-button.lenght)*' '}"\
-                    +f"{button.bg_rgb}{(button_space)*' '}\x1b[0m"\
-                    ,end='')
-            else:
-                print(
-                    f" {' '*(len(self.cursor.text))} "\
-                    +f"{button.print}"\
-                    +f"{(self.max_len_item-button.lenght)*' '}"\
-                    +f"{button.bg_rgb}{(button_space)*' '}\x1b[0m"\
-                    ,end='')
+            print(f"{nf}")
+
+            
+            for button in self.buttons:
+                button_space = 3+self.max_len_values
+                
+                if self.buttons.index(button) % wrap == 0:
+                    print("")
+                if pointer == self.elements.index(button):
+                    print(
+                        f" {' '*(len(self.cursor.text))} "\
+                        +f"{button.print_focus}"\
+                        +f"{button.focus_bg_rgb}{(self.max_len_item-button.lenght)*' '}"\
+                        +f"{button.bg_rgb}{(button_space)*' '}\x1b[0m"\
+                        ,end='')
+                else:
+                    print(
+                        f" {' '*(len(self.cursor.text))} "\
+                        +f"{button.print}"\
+                        +f"{(self.max_len_item-button.lenght)*' '}"\
+                        +f"{button.bg_rgb}{(button_space)*' '}\x1b[0m"\
+                        ,end='')
+            
+            print(f"{nf}")
         
-        print(f"{nf}")
-        print(f"{nf}")
+            keyboard = getKeyboard()
+            pointer = setCursor(keyboard, pointer, self.elements, wrap)
 
     def setEntries(self, entries):
         __entries = []
@@ -210,7 +257,7 @@ class Form():
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
                     
                 if type(entry) == type(Text('')):
-                    entry = Entry(entry.text, entry.id, ' ', 'all', 
+                    entry = Entry(entry.text, entry.id, '', 'all', 
                                         entry.name, entry._class,
                                         self.fg, self.bg, 
                                         self.placeholder_fg, self.placeholder_bg, 
@@ -219,7 +266,7 @@ class Form():
                                         entry.reverse, entry.crossed)
                     
                 if type(entry) == type(Checkbox('')):
-                    entry = Entry(entry.text, id=entry.id, value=' ', validation='checkbox', 
+                    entry = Entry(entry.text, id=entry.id, value='', validation='checkbox', 
                                     name=entry.name, _class=entry._class, fg=entry.fg, bg=entry.bg, 
                                     placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg, 
                                     bold=entry.bold, italic=entry.italic, underline=entry.underline, 
@@ -228,7 +275,7 @@ class Form():
             else:
                 print(entry)
                 print(f"{entry} porque era un texto")
-                entry = Entry(str(entry), value=' ', validation='all',fg=self.fg, bg=self.bg, 
+                entry = Entry(str(entry), value='', validation='all',fg=self.fg, bg=self.bg, 
                                 placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg)        
                 
             __entries.append(entry)

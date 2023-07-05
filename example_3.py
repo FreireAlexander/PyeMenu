@@ -3,6 +3,11 @@ from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Ch
 from pyemenu_dev import getKeyboard, setCursor, clear_screen
 from readchar import key
 
+def hacealgo(edad):
+    print(f"La edad es {edad} pero su cuadrado es {int(edad)*2}")
+    input("Supuestamente hago algo")
+
+
 def main():
     foreground = Colors.green
     background = Colors.white
@@ -14,25 +19,22 @@ def main():
     credit = Checkbox('Card')
     password = Entry('Password', validation='password',
                  bg=Colors.yellow, placeholder_fg=Colors.red)    
-    options = [name, surname, last_name, age,password]
+    options = [name, surname, last_name, age,credit,password]
     title = Title('New User')
     cursor = Text('~>')
-    clear_screen()
+    
     print("Aqui empieza lo del while ")
-    Enter = Button('El boton con el texto mas largo del mundo', bg=Colors.BurlyWood)
+    Enter = Button('No hace nada', bg=Colors.BurlyWood)
+    
     menu1 = Form(options, title=title, cursor=cursor, fg=foreground, bg=background,
                  placeholder_fg=Colors.DarkBlue, placeholder_bg=Colors.DimGray,
                  )
-    # Initialazing Variables
-    pointer = 0
-    wrap = 2
-    keyboard = ''
+    Enter.onClick = lambda: hacealgo(menu1.entries[3].value)
     
-    while True:
-        clear_screen()
-        menu1.print(pointer=pointer, 
-                    keyboard=keyboard, 
-                    wrap=wrap,
+    
+    
+    menu1.print(
+                    wrap=2,
                     highlight=True,
                     fg_hl=Colors.black, 
                     bg_hl=Colors.LimeGreen,
@@ -40,22 +42,11 @@ def main():
                     padding_bottom=True,
                     padding_up=True
                     )
-        print(Enter.print)
-        survey = menu1.survey
-        print(f"Max len item: {menu1.max_len_item}")
-        print(f"Max len Value: {menu1.max_len_values}")
         
-        keyboard = getKeyboard()
-        pointer = setCursor(keyboard, pointer, menu1.elements, wrap)
-        if keyboard in ["q", "Q"]:
-            break
-        if keyboard in ["c", "C"]:
-            print(menu1.entries[0].print)
-            menu1.entries[0].clear()
-            print(menu1.entries[0].print)
-            input(f"Press Enter")
+    print(f"Max len item: {menu1.max_len_item}")
+    print(f"Max len Value: {menu1.max_len_values}")
+    print(f"Datos del form: {menu1.survey}")
     
-    print(f"User registered: {survey}")
     
 
 if __name__ == '__main__':
