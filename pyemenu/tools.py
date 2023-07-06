@@ -11,6 +11,7 @@
 """
 #Libraries
 import os
+from os import get_terminal_size
 from readchar import key, readkey
 
 ## Global Variables
@@ -21,8 +22,10 @@ DOWN    = key.DOWN
 LEFT    = key.LEFT
 RIGHT   = key.RIGHT
 SPACE   = key.SPACE
-input_info = """Press ENTER to select an option"""
-input_exit = """Press (q) to exit"""
+input_info = """
+    Press ENTER to select an option"""
+input_exit = """
+    Press (q) or (Q) to exit"""
 
 # Os.clear functions
 def clear_screen():
@@ -46,7 +49,7 @@ def getKeyboard(info:str=input_info, exit_message:str=input_exit):
     info: str -> information of keyboard functions for the user 
     exit_message: str -> information of keyboard input to exit for the user
     """
-    print(f"\n\n{info}")
+    print(f"{info}", end="")
     print(f"{exit_message}")
     return readkey()
 
@@ -70,3 +73,24 @@ def setCursor(keyboard, pointer: int, options: list, wrap: int):
     if pointer > len(options) - 1: pointer = previous_pointer
     
     return pointer
+
+def resize_screen(wrap, block_width):
+    cols, rows = get_terminal_size()
+    while block_width*wrap>cols:
+        wrap -=1       
+    if wrap <0:
+        wrap = 1
+    return wrap
+
+def print_title(widget, title_align, title_decorator, 
+                block_width, wrap, title_padding_up, title_padding_bottom):
+    if widget.title.text != '':
+        widget.title.print_title(title_align, title_decorator, 
+                    (block_width)*wrap, 
+                    title_padding_up, 
+                    title_padding_bottom)
+
+def fill_empty_blocks(self, empty_blocks, block_width):
+    if empty_blocks != 0:
+        for i in range(empty_blocks):
+            print(f"{self.bg_rgb}{((block_width))*' '}", end='')
