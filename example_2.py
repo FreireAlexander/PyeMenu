@@ -1,6 +1,6 @@
-import pyemenu_dev as pyemenu 
-from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Checkbox
-from pyemenu_dev import getKeyboard, setCursor, clear_screen
+import pyemenu
+from pyemenu import Colors, Title, Text, Menu, Checkboxlist, Checkbox
+from pyemenu import getKeyboard, setCursor, clear_screen
 from readchar import key
 
 def main():
@@ -18,7 +18,7 @@ def main():
     options = [Perro1, Perro2, Perro3, Perro4, Perro5, Perro6, Perro7, Perro8, Perro9, None]
     title = Title('Mejores Perritos', fg=Colors.BlueViolet, bg=Colors.RosyBrown)
     cursor = Text('>>', blink=True, fg=Colors.red)
-    menu1 = Checkboxlist(options, multiselect=False ,title=title, cursor=cursor, fg=foreground, bg=background)
+    menu1 = Checkboxlist(options, multiselect=True ,title=title, cursor=cursor, fg=foreground, bg=background)
     # Initialazing Variables
     value = menu1.print(  
                     wrap=2,

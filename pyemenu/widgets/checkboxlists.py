@@ -50,22 +50,18 @@ class Checkboxlist():
                 item = Checkbox(str(item), fg=fg, bg=bg)
             if type(item) == type(Text('')) and item.bg != not_bg and item.fg != not_fg:
                 item = Checkbox(item.text, fg=item.fg, bg=item.bg,
-                                id=item.id, name=item.name, _class=item._class, 
                                 bold=item.bold, italic=item.italic, underline=item.underline, 
                                 blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             if type(item) == type(Text('')) and item.bg == not_bg and item.fg != not_fg:
                 item = Checkbox(item.text, bg=bg, fg=item.fg,
-                                id=item.id, name=item.name, _class=item._class, 
                                 bold=item.bold, italic=item.italic, underline=item.underline, 
                                 blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             if type(item) == type(Text('')) and item.fg == not_fg and item.bg != not_bg:
                 item = Checkbox(item.text, fg=fg, bg=item.bg,
-                                id=item.id, name=item.name, _class=item._class, 
                                 bold=item.bold, italic=item.italic, underline=item.underline, 
                                 blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             if type(item) == type(Text('')) and item.fg == not_fg and item.bg == not_bg:
                 item = Checkbox(item.text, fg=fg, bg=bg,
-                                id=item.id, name=item.name, _class=item._class, 
                                 bold=item.bold, italic=item.italic, underline=item.underline, 
                                 blink=item.blink, reverse=item.reverse, crossed=item.crossed)
             
@@ -118,18 +114,18 @@ class Checkboxlist():
                     title_padding_up, 
                     title_padding_bottom)
             if keyboard == key.SPACE:
-                        if self.multiselect:
-                            if self.items[pointer].text not in self.choices:
-                                self.items[pointer].onSelect()
-                                self.choices.append(self.items[self.items.index(self.items[pointer])].text)
-                            elif self.items[pointer].text in self.choices:
-                                self.items[pointer].onSelect()
-                                self.choices.remove(self.items[self.items.index(self.items[pointer])].text)
-                        else:
-                            self.items[pointer].onSelect()
-                            for other in self.items:
-                                if other != self.items[pointer]:
-                                    other.clear()
+                if self.multiselect:
+                    if self.items[pointer].text not in self.choices:
+                        self.items[pointer].onSelect() 
+                        self.choices.append(self.items[self.items.index(self.items[pointer])].text)
+                    elif self.items[pointer].text in self.choices:
+                        self.items[pointer].onSelect()
+                        self.choices.remove(self.items[self.items.index(self.items[pointer])].text)
+                else:
+                    self.items[pointer].onSelect()
+                    for other in self.items:
+                        if other != self.items[pointer]:
+                            other.clear()
 
                             self.choices = self.items[self.items.index(self.items[pointer])].text
             for item in self.items:
@@ -137,9 +133,10 @@ class Checkboxlist():
                     print("")
                 if pointer == self.items.index(item):
                     if highlight:
-                        it_hl = Checkbox(item.text, item.id, item.box,item.name, item._class, fg_hl, bg_hl,
-                                        item.bold, item.italic, item.underline, item.blink, item.reverse, 
-                                        item.crossed)
+                        it_hl = Checkbox(item.text,  box=item.box,fg=fg_hl, bg=bg_hl,
+                                        bold=item.bold, italic=item.italic, underline=item.underline, 
+                                        blink=item.blink, reverse=item.reverse, 
+                                        crossed=item.crossed)
                         print(
                             f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
                             +f"{it_hl.print}{it_hl.bg_rgb}"\

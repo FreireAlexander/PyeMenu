@@ -1,9 +1,25 @@
-import pyemenu_dev as pyemenu 
-from pyemenu_dev import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox, Button
-from pyemenu_dev import getKeyboard, setCursor, clear_screen
+import pyemenu
+from pyemenu import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox, Button
+from pyemenu import getKeyboard, setCursor, clear_screen
 from readchar import key
 
+
+logo = """
+ _____   ___ ______ _____ _   _  ___________ _____ 
+/  __ \ / _ \|  _  \  ___| \ | ||  ___| ___ \  _  |
+| /  \// /_\ \ | | | |__ |  \| || |__ | |_/ / | | |
+| |    |  _  | | | |  __|| . ` ||  __||    /| | | |
+| \__/\| | | | |/ /| |___| |\  || |___| |\ \\ \_/ / 
+ \____/\_| |_/___/ \____/\_| \_/\____/\_| \_|\___/ 
+                                                   
+                                                   
+"""
+
+Logo = Text(logo, fg=Colors.Azure, bg=Colors.Navy)
+
 def hacealgo(edad):
+    if edad.isnumeric() == False:
+        edad = 0
     print(f"La edad es {edad} pero su cuadrado es {int(edad)*2}")
     input("Supuestamente hago algo")
 
@@ -28,7 +44,7 @@ def main():
     
     menu1 = Form(options, title=title, cursor=cursor, fg=foreground, bg=background,
                  placeholder_fg=Colors.DarkBlue, placeholder_bg=Colors.DimGray,
-                 )
+                 buttons=[Enter])
     Enter.onClick = lambda: hacealgo(menu1.entries[3].value)
     
     
@@ -36,16 +52,16 @@ def main():
     menu1.print(
                     wrap=2,
                     highlight=True,
-                    fg_hl=Colors.black, 
-                    bg_hl=Colors.LimeGreen,
                     title_align='center', 
                     padding_bottom=True,
-                    padding_up=True
+                    padding_up=True,
+                    logo=Logo
                     )
         
     print(f"Max len item: {menu1.max_len_item}")
     print(f"Max len Value: {menu1.max_len_values}")
     print(f"Datos del form: {menu1.survey}")
+    print(len(logo.splitlines()[1]))
     
     
 

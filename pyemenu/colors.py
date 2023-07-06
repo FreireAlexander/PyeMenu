@@ -1,4 +1,6 @@
 """
+    
+    PyeMenu version 1.0.0
     This module contain the color value.
 
     This module was developed by Freire Alexander Palomino Palma
@@ -206,3 +208,8 @@ class Colors:
     LightSlateGray=             '#778899'
     SlateGray=                  '#708090'
     DarkSlateGray=              '#2F4F4F'
+    # Blacks HTML Color Names
+    BlackOlive=                 '#3B3C36'
+    Onyx=                       '#353839'
+    Jet=                        '#343434'
+    JetBlack=                   '#0E0E10'

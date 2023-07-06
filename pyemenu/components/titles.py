@@ -6,13 +6,14 @@ not_bg = '\x1b[49m'
 class Title(Text):
     """
     This class allow you to format a Title, this class extend from Text()
-    some formats and effects are not available
+    some colors styles and effects are not available
     in some terminal emulators as Kitty, Alacritty, etc...
+    A full list of terminals will be show on https://github.com/FreireAlexander/PyeMenu
     properties:
         text: str         
     ***** Text Style *****
-        fg: str # in html format, much color colud be found in Color() Class
-        bg: str # in html format, much color colud be found in Color() Class
+        fg: str -> A color in hexadecimal, much of colors could be found in Colors class 
+        bg: str -> A color in hexadecimal, much of colors could be found in Colors class
         bold: bool 
         italic: bool 
         underline: bool 
@@ -20,16 +21,18 @@ class Title(Text):
         reverse: bool 
         crossed: bool 
     """
-    def __init__(self, text: str, id=None,
-                name: str='',_class: str='', fg: str = not_fg, bg: str = not_bg,
+    def __init__(self, text: str,
+                fg: str = not_fg, bg: str = not_bg,
                 bold: bool = False, italic: bool = False, underline: bool = False,
                 blink: bool = False, reverse: bool = False, crossed: bool = False):
-        super().__init__(text, id, name,_class, fg, bg,
-                bold, italic, underline, blink, reverse, crossed)
+        super().__init__(text, fg, bg,
+                            bold, italic, underline, 
+                            blink, reverse, crossed)
         self.title_text = ' '+text+' '
         self._lenght = len(self.title_text)
         self.styled = Text.setStyle(self, self.title_text, self.fg, self.bg, 
-                                 self.bold, self.italic, self.underline, self.blink, self.reverse, self.crossed)
+                                    self.bold, self.italic, self.underline, 
+                                    self.blink, self.reverse, self.crossed)
         
     
     def print_title(self, align: str = 'center',
@@ -75,28 +78,27 @@ class Title(Text):
         print('\x1b[0m', end='')
 
     def setTitle(self, title):
+        """
+        This method transform a string object to a Title object
+        """
         if type(title) != type(Title('')):
             title = Title(str(title), fg=self.fg, bg=self.bg)
         if type(title) == type(Title('')) and title.bg != not_bg and title.fg != not_fg:
             title = Title(title.text, bg=title.bg, fg=title.fg, 
-                               id=title.id, name=title.name, _class=title._class, 
-                               bold=title.bold, italic=title.italic, underline=title.underline, 
-                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+                            bold=title.bold, italic=title.italic, underline=title.underline, 
+                            blink=title.blink, reverse=title.reverse, crossed=title.crossed)
         if type(title) == type(Title('')) and title.bg == not_bg and title.fg != not_fg:
             title = Title(title.text, bg=self.bg, fg=title.fg, 
-                               id=title.id, name=title.name, _class=title._class, 
-                               bold=title.bold, italic=title.italic, underline=title.underline, 
-                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+                            bold=title.bold, italic=title.italic, underline=title.underline, 
+                            blink=title.blink, reverse=title.reverse, crossed=title.crossed)
         if type(title) == type(Title('')) and title.fg == not_fg and title.bg != not_bg:
             title = Title(title.text, fg=self.fg, bg=title.bg,
-                               id=title.id, name=title.name, _class=title._class, 
-                               bold=title.bold, italic=title.italic, underline=title.underline, 
-                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+                            bold=title.bold, italic=title.italic, underline=title.underline, 
+                            blink=title.blink, reverse=title.reverse, crossed=title.crossed)
         if type(title) == type(Title('')) and title.fg == not_fg and title.bg == not_bg:
             title = Title(title.text, fg=self.fg, bg=self.bg,
-                               id=title.id, name=title.name, _class=title._class, 
-                               bold=title.bold, italic=title.italic, underline=title.underline, 
-                               blink=title.blink, reverse=title.reverse, crossed=title.crossed)
+                            bold=title.bold, italic=title.italic, underline=title.underline, 
+                            blink=title.blink, reverse=title.reverse, crossed=title.crossed)
         
         return title
 

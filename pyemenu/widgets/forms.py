@@ -79,17 +79,16 @@ class Form():
     def print(self,
             wrap: int=1,
             highlight: bool = False,
-            fg_hl = Colors.white,
-            bg_hl = Colors.Lime, 
+            fg_hl = Colors.Azure,
+            bg_hl = Colors.Navy, 
             title_decorator: str= ' ',
             title_align: str='center',
             padding_up: bool = False,
             padding_bottom: bool = False, 
             title_padding_up: bool = False,
             title_padding_bottom: bool = False, 
-            button_focus_bg = Colors.white,
-            button_focus_fg  =  Colors.black,
             button_focus_blink: bool = False,
+            logo: str = ''
             ):
         """
         This Method allow a Menu to be show on screen, it is possible to 
@@ -111,9 +110,8 @@ class Form():
         keyboard = None
         while True:
             clear_screen()
+            
             if keyboard == key.DELETE:
-                input("Presioné delete")
-            if keyboard == key.BACKSPACE:
                 if pointer in range(len(self.entries)):
                     clear_screen()
                     self.entries[pointer].clear()
@@ -140,9 +138,15 @@ class Form():
             
             self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
             block_width = 7+self.cursor.lenght+self.max_len_item+self.max_len_values
+            
+            
+
             self.survey = {entry.text:entry.value for entry in self.entries}
+
+            print(logo.styled)
+
             if padding_up:
-                print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
+                print(f"{self.bg_rgb}{((block_width)*wrap)*' '}")
             if self.title.text != '':
                 self.title.print_title(title_align, title_decorator, 
                     (block_width)*wrap, 
@@ -154,8 +158,8 @@ class Form():
                 if pointer == self.entries.index(item):
                     
                     if highlight:
-                        it_hl = Entry(item.text, item.id, item.value, item.validation, item.name,
-                                    item._class, fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
+                        it_hl = Entry(item.text, item.value, item.validation,
+                                    fg_hl, bg_hl, fg_hl, bg_hl, item.bold, 
                                     item.italic, item.underline, item.blink, item.reverse, item.crossed)
                         if it_hl.validation=='password':
                             print(
@@ -202,27 +206,34 @@ class Form():
             if padding_bottom:
                 print(f"\n{self.bg_rgb}{((block_width)*wrap)*' '}")
             
-            print(f"{nf}")
-
+            print(f"{nf}", end="")
+            print(f"{block_width*wrap*'—'}", end='')
             
             for button in self.buttons:
-                button_space = 3+self.max_len_values
-                
+                button_space = 3+self.max_len_values+self.max_len_item-button.lenght
+                if button_space%2==0:
+                    left_spaces = button_space//2
+                    right_spaces = left_spaces
+                else:
+                    left_spaces = button_space//2
+                    right_spaces = button_space//2 + 1
+
                 if self.buttons.index(button) % wrap == 0:
                     print("")
                 if pointer == self.elements.index(button):
+                    button_selected = Button(label=button.text, bg=bg_hl, fg=fg_hl, blink=button_focus_blink)
                     print(
                         f" {' '*(len(self.cursor.text))} "\
-                        +f"{button.print_focus}"\
-                        +f"{button.focus_bg_rgb}{(self.max_len_item-button.lenght)*' '}"\
-                        +f"{button.bg_rgb}{(button_space)*' '}\x1b[0m"\
+                        +f"{button_selected.bg_rgb}{(left_spaces)*' '}"\
+                        +f"{button_selected.print}"\
+                        +f"{button_selected.bg_rgb}{(right_spaces)*' '}\x1b[0m"\
                         ,end='')
                 else:
                     print(
                         f" {' '*(len(self.cursor.text))} "\
+                        +f"{button.bg_rgb}{(left_spaces)*' '}"\
                         +f"{button.print}"\
-                        +f"{(self.max_len_item-button.lenght)*' '}"\
-                        +f"{button.bg_rgb}{(button_space)*' '}\x1b[0m"\
+                        +f"{button.bg_rgb}{(right_spaces)*' '}\x1b[0m"\
                         ,end='')
             
             print(f"{nf}")
@@ -233,7 +244,7 @@ class Form():
     def setEntries(self, entries):
         __entries = []
         for entry in entries:   
-            if type(entry) in [type(Text('')), type(Entry('estoy vacio')), type(Checkbox(''))]:
+            if type(entry) in [type(Text('')), type(Entry('')), type(Checkbox(''))]:
                 if entry.bg == not_bg and entry.fg == not_fg:
                     entry.bg = self.bg
                     entry.fg = self.fg
@@ -242,7 +253,7 @@ class Form():
                 elif entry.bg == not_bg and entry.fg != not_fg:
                     entry.bg = self.bg
 
-                if type(entry) == type(Entry('viendo si es entry')):
+                if type(entry) == type(Entry('')):
                     if entry.placeholder_bg == not_bg and entry.placeholder_fg == not_fg:
                         entry.placeholder_bg = self.placeholder_bg
                         entry.placeholder_fg = self.placeholder_fg
@@ -251,14 +262,13 @@ class Form():
                     elif entry.placeholder_bg == not_bg and entry.placeholder_fg != not_fg:
                         entry.placeholder_bg = self.placeholder_bg
                         
-                    entry = Entry(entry.text, entry.id, entry.value, entry.validation, entry.name, entry._class,
+                    entry = Entry(entry.text, entry.value, entry.validation,
                                 entry.fg, entry.bg, entry.placeholder_fg, entry.placeholder_bg, 
                                 entry.bold, entry.italic, 
                                 entry.underline, entry.blink, entry.reverse, entry.crossed)
                     
                 if type(entry) == type(Text('')):
-                    entry = Entry(entry.text, entry.id, '', 'all', 
-                                        entry.name, entry._class,
+                    entry = Entry(entry.text, '', 'all', 
                                         self.fg, self.bg, 
                                         self.placeholder_fg, self.placeholder_bg, 
                                         entry.bold, entry.italic, 
@@ -266,15 +276,13 @@ class Form():
                                         entry.reverse, entry.crossed)
                     
                 if type(entry) == type(Checkbox('')):
-                    entry = Entry(entry.text, id=entry.id, value='', validation='checkbox', 
-                                    name=entry.name, _class=entry._class, fg=entry.fg, bg=entry.bg, 
+                    entry = Entry(entry.text, value='', validation='checkbox', 
+                                    fg=entry.fg, bg=entry.bg, 
                                     placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg, 
                                     bold=entry.bold, italic=entry.italic, underline=entry.underline, 
                                     blink=entry.blink, reverse=entry.reverse, crossed=entry.crossed)
                 
             else:
-                print(entry)
-                print(f"{entry} porque era un texto")
                 entry = Entry(str(entry), value='', validation='all',fg=self.fg, bg=self.bg, 
                                 placeholder_fg=self.placeholder_fg, placeholder_bg=self.placeholder_bg)        
                 
@@ -285,17 +293,7 @@ class Form():
     def setButtons(self, buttons):
         __buttons = []
         for button in buttons:   
-            if type(button) == type(Button(' ')):
-                if button.bg == not_bg and button.fg == not_fg:
-                    button.bg = self.bg
-                    button.fg = self.fg
-                elif button.bg != not_bg and button.fg == not_fg:
-                    button.fg = self.fg
-                elif button.bg == not_bg and button.fg != not_fg:
-                    button.bg = self.bg
-            else:
-                print(button)
-                print(f"{button} porque era un texto")
+            if type(button) != type(Button(' ')):
                 button = Button(str(button))        
                 
             __buttons.append(button)
@@ -304,19 +302,15 @@ class Form():
     
     def setPlaceholder(self):
         if self.placeholder_bg == not_bg and self.placeholder_fg == not_fg:
-            print("FORM PL no tiene ni fondo ni letra ")
             placeholder_fg_rgb = self.fg
             placeholder_bg_rgb = self.bg
         if self.placeholder_bg != not_bg and self.placeholder_fg == not_fg:
-            print("FORM PL no letra ")
             placeholder_fg_rgb = self.fg
             placeholder_bg_rgb = self.placeholder_bg
         if self.placeholder_bg == not_bg and self.placeholder_fg != not_fg:
-            print("FORM PL no tiene fondo ")
             placeholder_fg_rgb = self.placeholder_fg
             placeholder_bg_rgb = self.bg
         if self.placeholder_bg != not_bg and self.placeholder_fg != not_fg:
-            
             placeholder_fg_rgb = self.placeholder_fg
             placeholder_bg_rgb = self.placeholder_bg
         
