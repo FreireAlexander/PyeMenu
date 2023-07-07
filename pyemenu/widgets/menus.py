@@ -6,14 +6,13 @@
     This module was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
 """
-# Local Libraries
-import math
-from readchar import key
-from ..components import Text
-from ..components import Title
+# Local
+from ..components import Text, Title
 from ..colors import Colors, setColor
 from ..tools import setCursor, getKeyboard, clear_screen, resize_screen
 from ..tools import print_title, fill_empty_blocks
+# External
+import math
 from readchar import key
 
 
@@ -30,13 +29,13 @@ class Menu():
     This class allow to create an simple option list for selecting
     one option from a list of options.
     The parameters to initialize the class are:
-        options: List -> List of labels for been selected 
+        options: List -> List of labels for been answer 
         title: str or Text object -> The text title to be printed up the menu
         cursor: str or Text object -> The char/s that represent the cursor
         fg: str -> A color in hexadecimal, much of colors could be found in Colors class 
         bg: str -> A color in hexadecimal, much of colors could be found in Colors class
     Some of the properties of this class are:
-        selected -> return the selected value from the list
+        answer -> return the answer value from the list
     For Show this menu it should be use the print() method.
     '''
     def __init__(self, options: list, 
@@ -51,7 +50,7 @@ class Menu():
         self.fg_rgb = '\x1b[38;'+setColor(fg)
         self.bg = bg
         self.bg_rgb = '\x1b[48;'+setColor(bg)
-        self.selected = Text('Vacio')
+        self.answer = Text('Vacio')
         self.cursor = Text.setText(self, cursor)
         self.title = Title.setTitle(self, title)
 
@@ -82,7 +81,7 @@ class Menu():
             ):
         """
         This Method allow a Menu to be show on screen
-        Return a string with the selected value or None
+        Return a string with the answer value or None
         parameters:
             wrap: int -> how elements into options are wrapped
             highlight: bool = False,
@@ -96,7 +95,7 @@ class Menu():
             title_padding_bottom: bool = False -> add a new line behind title
         """
         pointer = 0
-        selected = None
+        answer = None
         keyboard = None
         while True:
             clear_screen()
@@ -111,9 +110,9 @@ class Menu():
                 if self.options.index(option) % wrap == 0:
                     print("")
                 if pointer == self.options.index(option):
-                    self.selected = option.text
+                    self.answer = option.text
                     if keyboard == key.ENTER:
-                        self.selected = option.text
+                        self.answer = option.text
                     if highlight:
                         op_hl = Text(option.text, fg=fg_hl, bg=bg_hl)
                         print(
@@ -142,8 +141,8 @@ class Menu():
             keyboard = getKeyboard()
             pointer = setCursor(keyboard, pointer, self.options, wrap)
             if keyboard in ["q", "Q"]:
-                self.selected = None
-                return self.selected
+                self.answer = None
+                return self.answer
             if keyboard == key.ENTER:
-                return self.selected
+                return self.answer
             
