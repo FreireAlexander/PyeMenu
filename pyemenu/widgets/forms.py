@@ -87,7 +87,7 @@ class Form():
         
     def print(self,
             wrap: int=1,
-            highlight: bool = False,
+            highlight: bool = True,
             fg_hl = Colors.Azure,
             bg_hl = Colors.Navy, 
             title_decorator: str= ' ',
@@ -104,7 +104,7 @@ class Form():
         specifies:
         parameters:
             wrap: int -> how elements into options are wrapped
-            highlight: bool = False,
+            highlight: bool -> True by default
             fg_hl -> foreground color for highlight current option
             bg_hl -> background color for highlight current option
             title_align: str -> 'center', 'right' or 'left'

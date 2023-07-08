@@ -10,7 +10,7 @@
 from ..components import Text, Title, Checkbox
 from ..colors import Colors, setColor
 from ..tools import setCursor, getKeyboard, clear_screen, resize_screen
-from ..tools import print_title, fill_empty_blocks
+from ..tools import print_title, fill_empty_blocks, print_logo
 # External
 import math
 from readchar import key
@@ -59,7 +59,7 @@ class Checkboxlist():
         
     def print(self,
             wrap: int=1,
-            highlight: bool = False,
+            highlight: bool = True,
             fg_hl = Colors.white,
             bg_hl = Colors.Lime, 
             title_decorator: str= ' ',
@@ -67,14 +67,15 @@ class Checkboxlist():
             padding_up: bool = False,
             padding_bottom: bool = False, 
             title_padding_up: bool = False,
-            title_padding_bottom: bool = False
+            title_padding_bottom: bool = False,
+            logo: str = ''
             ):
         """
         This Method allow a Checkboxlist to be show on screen
         Return a string with the selected values or None
         parameters:
             wrap: int -> how elements into options are wrapped
-            highlight: bool = False,
+            highlight: bool -> True by default
             fg_hl -> foreground color for highlight current option
             bg_hl -> background color for highlight current option
             title_align: str -> 'center', 'right' or 'left'
@@ -83,6 +84,8 @@ class Checkboxlist():
             padding_bottom: bool = False -> add a new line behind title
             title_padding_up: bool = False -> add a new line above title
             title_padding_bottom: bool = False -> add a new line behind title
+            logo: str -> This parameter allow to print a logo or an extra title 
+                above the Form print
         """
         pointer = 0
         self.answer = []
@@ -91,6 +94,7 @@ class Checkboxlist():
             clear_screen()
             block_width = 9+self.cursor.lenght+self.max_len_option
             wrap = resize_screen(wrap, block_width)
+            print_logo(logo)
             if padding_up:
                 print(f"{self.bg_rgb}{((block_width)*wrap)*' '}")
             print_title(self, title_align, title_decorator, 
