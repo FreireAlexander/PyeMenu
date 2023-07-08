@@ -9,9 +9,10 @@ def main():
         'Golden Retriever', 'Labrador', 'German Sheppard',
         'Akita', 'Galgo', dog
     ]
-    title = Title('What is your favorite dog?', fg=Colors.SeaGreen, italic=True)
+    title = Title('What is your favorite/s dog/s?', fg=Colors.SeaGreen, italic=True)
     cursor = Text('➤', blink=True, fg=Colors.Navy)
-    question = Checkboxlist(options, multiselect=True ,title=title, cursor=cursor, fg=foreground, bg=background)
+    question = Checkboxlist(options, multiselect=True ,
+                            title=title, cursor=cursor, fg=foreground, bg=background)
     question.print(  
                     wrap=3, highlight=True,
                     fg_hl=Colors.black, bg_hl=Colors.SkyBlue,

@@ -13,6 +13,7 @@
 import os
 from os import get_terminal_size
 from readchar import key, readkey
+from .components import Text, Title
 
 ## Global Variables
 # Keyboard Values
@@ -89,6 +90,16 @@ def print_title(widget, title_align, title_decorator,
                     (block_width)*wrap, 
                     title_padding_up, 
                     title_padding_bottom)
+
+def print_logo(logo):
+    if type(logo) in [type(Text("")), type(Title(""))]:
+        print(f"{logo.styled}")
+    elif str(logo):
+        logo = Text(str(logo))
+        print(f"{logo.styled}")
+    else:
+        pass
+
 
 def fill_empty_blocks(self, empty_blocks, block_width):
     if empty_blocks != 0:

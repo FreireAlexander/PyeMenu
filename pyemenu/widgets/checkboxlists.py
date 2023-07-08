@@ -35,8 +35,8 @@ class Checkboxlist():
         fg: str -> A color in hexadecimal, much of colors could be found in Colors class 
         bg: str -> A color in hexadecimal, much of colors could be found in Colors class
     Some of the properties of this class are:
-        selected -> return the selected value from the list
-    For Show this menu it should be use the print() method. 
+        answer -> return the selected value from the list
+    For Show this Checkboxlist it should be use the print() method. 
     '''
     def __init__(self, options: list,
                 multiselect: bool = True, 
@@ -55,7 +55,7 @@ class Checkboxlist():
         self.answer = []
         self.cursor = Text.setText(self, cursor)
         self.title = Title.setTitle(self, title)
-        self.options = self.setoptions(options)
+        self.options = self.setOptions(options)
         
     def print(self,
             wrap: int=1,
@@ -151,7 +151,7 @@ class Checkboxlist():
             if keyboard == key.ENTER:
                 return self.answer
 
-    def setoptions(self, options):
+    def setOptions(self, options):
         list_options = []
         for option in options:
             if type(option) != type(Text('')):
