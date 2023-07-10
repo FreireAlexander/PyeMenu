@@ -1,5 +1,4 @@
-from pyemenu import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox, Button
-from readchar import key
+from pyemenu import Colors, Title, Text, Form, Entry, Button
 
 
 logo = r"""
