@@ -26,6 +26,5 @@ def main():
     else:
         print(f"\nMy Favorites Dog are {question.answer}")
     
-
 if __name__ == '__main__':
     main()

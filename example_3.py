@@ -1,6 +1,5 @@
 from pyemenu import Colors, Title, Text, Form, Entry, Button
 
-
 logo = r"""
   ____        _   _     ____     __     __   U _____ u   __   __ 
  / __"| u  U |"|u| | U |  _"\ u  \ \   /"/u  \| ___"|/   \ \ / / 

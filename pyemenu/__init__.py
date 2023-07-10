@@ -23,7 +23,7 @@
 
     PyeMenu version 1.0.0
 """
-from .components import Text, Title, Checkbox, Entry, Button
+from .components import Text, Title, Entry, Button, Checkbox
 from .widgets import Menu, Checkboxlist, Form
 from .tools import clear_screen, getKeyboard
 from .colors import Colors

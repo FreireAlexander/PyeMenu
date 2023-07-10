@@ -1,11 +1,11 @@
-import setuptools
+from setuptools import setup, find_packages
 with open("README.md", "r", encoding= "utf-8") as fh:
   long_description = fh.read()
 
-setuptools.setup(
+setup(
     name = 'pyemenu',         # How you named your package folder (MyLib)
-    packages = ['pyemenu'],
-    version = '1.0.0',      # Start with a small number and increase it with every change you make
+    packages=find_packages(),
+    version = '1.0.1',      # Start with a small number and increase it with every change you make
     author = 'Freire Alexander Palomino Palma',                   # Type in your name
     author_email = 'freirealexander0214@gmail.com',      # Type in your E-Mail
     license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository

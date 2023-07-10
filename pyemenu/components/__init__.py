@@ -7,12 +7,12 @@
         4. Entry
         5. Button
     
-    PyeMenu version 1.0.0
+    PyeMenu version 1.0.1
     This package was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
 """
 from .texts import Text
+from .titles import Title
 from .checkboxs import Checkbox
 from .entries import Entry
-from .titles import Title
 from .buttons import Button

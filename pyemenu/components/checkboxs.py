@@ -22,7 +22,7 @@ class Checkbox(Text):
         reverse: bool 
         crossed: bool
         
-    PyeMenu version 1.0.0
+    PyeMenu version 1.0.1
     """
     def __init__(self, label: str, box: str=' ', 
                 fg: str = not_fg, bg: str = not_bg,

@@ -6,12 +6,12 @@
 
 
 
-# Python - PyeMenu Version 1.0.0
+# Python - PyeMenu Version 1.0.1
 PyeMenu is a simple and really easy kit for developing Text User Interface apps in Python. It can be used to develop minimalist apps that run in terminal emulator.
 
 ### News
 PyeMenu has a lot of new features, starting by it has color now, it is possible to set foreground and background color to text, titles and widgets, there is a special class call colors to get a lot of colors by name taken from this page [this](https://htmlcolorcodes.com/color-names/).<br>
-PyeMenu Version 1.0.0 now includes two principal elements, there are widgets and components.
+PyeMenu Version 1.0.1 now includes two principal elements, there are widgets and components.
 
 ### Widgets and Components
 PyeMenu has two main elements group, it has components and widgets.<br>
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 if you use this example your output would be something like this:
 <br>
 <div style="text-align:center">
-    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_1.png" alt="Example">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/Example_1.png" alt="Example">
 </div>
 <p></p>
 
@@ -143,7 +143,7 @@ if __name__ == '__main__':
 ```
 
 <div style="text-align:center">
-    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_2.png" alt="Example">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/Example_2.png" alt="Example">
 </div>
 
 <p></p>
@@ -197,14 +197,14 @@ if __name__ == '__main__':
 
 This Form class allows a lot of type of inputs from users even a custom type specifing a custom validation function from the user, for more information visit the Wiki.<br>
 <div style="text-align:center">
-    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_3a.png" alt="Example">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/Example_3a.png" alt="Example">
 </div>
 
 <p></p>
 
 You can get something like this<br>
 <div style="text-align:center">
-    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_3b.png" alt="Example">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/Example_3b.png" alt="Example">
 </div>
 
 <p></p>

@@ -1,7 +1,6 @@
 from pyemenu import Colors
 from pyemenu import Text, Title, Menu
 
-
 def main():
     foreground = Colors.BlackOlive
     background = Colors.GhostWhite

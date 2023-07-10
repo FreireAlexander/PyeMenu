@@ -8,7 +8,7 @@
     This package was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
     
-    PyeMenu version 1.0.0
+    PyeMenu version 1.0.1
 """
 from .menus import Menu
 from .checkboxlists import Checkboxlist
