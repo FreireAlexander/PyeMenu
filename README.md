@@ -82,7 +82,7 @@ print(f"Your choice was {choice}")
 ```
 
 <div style="text-align:center">
-    <img src="[images/Example2.png](https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_2.png)" alt="Example number 1">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_2.png" alt="Example number 1">
 </div>
 
 <p></p>
@@ -103,14 +103,14 @@ print(f"Your choice was {choice}")
 ```
 
 <div style="text-align:center">
-    <img src="[images/Example3a.png](https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_3a.png)" alt="Example number 1">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_3a.png" alt="Example number 1">
 </div>
 
 <p></p>
 
 
 <div style="text-align:center">
-    <img src="[images/Example3b.png](https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_3b.png)" alt="Example number 1">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_3b.png" alt="Example number 1">
 </div>
 
 <p></p>
