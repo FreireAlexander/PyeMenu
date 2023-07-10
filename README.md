@@ -57,7 +57,7 @@ print(f"\n Your choice was {choice}")
 ```
 
 <div style="text-align:center">
-    <img src="[images/Example1.png](https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_1.png)" alt="Example number 1">
+    <img src="https://github.com/FreireAlexander/PyeMenu/blob/master/images/example_1.png" alt="Example number 1">
 </div>
 <p></p>
 
