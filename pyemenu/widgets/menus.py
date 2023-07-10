@@ -1,0 +1,152 @@
+"""
+    This module provide an easy way to build menu prompts for CLI
+    this module contain the next Class:
+    Menu() for create simple and easy useful Menu 
+
+    This module was developed by Freire Alexander Palomino Palma
+    *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
+        
+    PyeMenu version 1.0.0
+"""
+# Local
+from ..components import Text, Title
+from ..colors import Colors, setColor
+from ..tools import setCursor, getKeyboard, clear_screen, resize_screen
+from ..tools import print_title, fill_empty_blocks, print_logo
+# External
+import math
+from readchar import key
+
+nf = '\x1b[0m'
+not_fg = '\x1b[39m'
+not_bg = '\x1b[49m'
+input_info = """
+    Press Enter to select and option or
+    Press q to exit without select any option
+"""
+
+class Menu():
+    '''
+    This class allow to create an simple option list for selecting
+    one option from a list of options.
+    The parameters to initialize the class are:
+        options: List -> List of labels for been answer 
+        title: str or Text object -> The text title to be printed up the menu
+        cursor: str or Text object -> The char/s that represent the cursor
+        fg: str -> A color in hexadecimal, much of colors could be found in Colors class 
+        bg: str -> A color in hexadecimal, much of colors could be found in Colors class
+    Some of the properties of this class are:
+        answer -> return the answer value from the list
+    For Show this menu it should be use the print() method.
+    '''
+    def __init__(self, options: list, 
+                title: str = '', cursor: str = '-->',
+                fg: str = not_fg, bg: str = not_bg):
+        self.options = [Text(str(option)) if type(option)!=type(Text('')) else option for option in options]
+        self.max_len_option = max(self.options, key = lambda x: x.lenght).lenght
+        title.width = self.max_len_option
+        self.title = title
+        self.cursor = cursor
+        self.fg = fg
+        self.fg_rgb = '\x1b[38;'+setColor(fg)
+        self.bg = bg
+        self.bg_rgb = '\x1b[48;'+setColor(bg)
+        self.answer = Text('Vacio')
+        self.cursor = Text.setText(self, cursor)
+        self.title = Title.setTitle(self, title)
+
+        self.options = []
+        for option in options:
+            if type(option) != type(Text('')):
+                option = Text(str(option), fg=fg, bg=bg)
+            if type(option) == type(Text('')) and option.bg == not_bg and option.fg != not_fg:
+                option = Text(option.text, bg=bg, fg=option.fg)
+            if type(option) == type(Text('')) and option.fg == not_fg and option.bg != not_bg:
+                option = Text(option.text, fg=fg, bg=option.bg)
+            if type(option) == type(Text('')) and option.fg == not_fg and option.bg == not_bg:
+                option = Text(option.text, fg=fg, bg=bg)
+            
+            self.options.append(option)
+
+    def print(self,
+            wrap: int=1,
+            highlight: bool = True,
+            fg_hl = Colors.Azure,
+            bg_hl = Colors.Navy, 
+            title_decorator: str= ' ',
+            title_align: str='center',
+            padding_up: bool = False,
+            padding_bottom: bool = False, 
+            title_padding_up: bool = False,
+            title_padding_bottom: bool = False,
+            logo: str = ''
+            ):
+        """
+        This Method allow a Menu to be show on screen
+        Return a string with the answer value or None
+        parameters:
+            wrap: int -> how elements into options are wrapped
+            highlight: bool -> True by default
+            fg_hl -> foreground color for highlight current option
+            bg_hl -> background color for highlight current option
+            title_align: str -> 'center', 'right' or 'left'
+            title_decorator: str -> just one char to print around Title text
+            padding_up: bool = False -> add a new line above title
+            padding_bottom: bool = False -> add a new line behind title
+            title_padding_up: bool = False -> add a new line above title
+            title_padding_bottom: bool = False -> add a new line behind title
+            logo: str -> This parameter allow to print a logo or an extra title 
+                above the Form print
+        """
+        pointer = 0
+        keyboard = None
+        while True:
+            clear_screen()
+            block_width = 4+self.cursor.lenght+self.max_len_option
+            wrap = resize_screen(wrap, block_width)
+            print_logo(logo)
+            if padding_up:
+                print(f"{self.bg_rgb}{((block_width)*wrap)*' '}")
+            print_title(self, title_align, title_decorator, 
+                        block_width, wrap, title_padding_up, 
+                        title_padding_bottom)
+            for option in self.options:
+                if self.options.index(option) % wrap == 0:
+                    print("")
+                if pointer == self.options.index(option):
+                    self.answer = option.text
+                    if keyboard == key.ENTER:
+                        self.answer = option.text
+                    if highlight:
+                        op_hl = Text(option.text, fg=fg_hl, bg=bg_hl)
+                        print(
+                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "\
+                            +f"{op_hl.bg_rgb} {op_hl.styled}{op_hl.bg_rgb} "\
+                            +f"{(self.max_len_option-len(option.text))*' '}", 
+                            end="")
+                    else:
+                        print(
+                            f"{self.cursor.bg_rgb} {self.cursor.styled}{self.cursor.bg_rgb} "
+                            +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
+                            +f"{(self.max_len_option-len(option.text))*' '}", 
+                            end="")
+                else:
+                    print(
+                        f"{self.cursor.bg_rgb} {self.cursor.lenght*' '}{self.cursor.bg_rgb} "\
+                        +f"{option.bg_rgb} {option.styled}{option.bg_rgb} "\
+                        +f"{(self.max_len_option-len(option.text))*' '}", 
+                        end="")
+            empty_blocks = int(math.ceil(len(self.options)/wrap)*wrap)-len(self.options)
+            fill_empty_blocks(self, empty_blocks, block_width)
+            if padding_bottom:
+                print(f"\n{self.bg_rgb}{(block_width*wrap)*' '}", end='')
+            print(f"{nf}")
+
+            keyboard = getKeyboard()
+            pointer = setCursor(keyboard, pointer, self.options, wrap)
+            if keyboard in ["q", "Q"]:
+                self.answer = None
+                return self.answer
+            if keyboard == key.ENTER:
+                return self.answer
+            

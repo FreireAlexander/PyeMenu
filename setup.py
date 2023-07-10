@@ -5,20 +5,20 @@ with open("README.md", "r", encoding= "utf-8") as fh:
 setuptools.setup(
     name = 'pyemenu',         # How you named your package folder (MyLib)
     packages = ['pyemenu'],
-    version = '0.1.0',      # Start with a small number and increase it with every change you make
+    version = '1.0.0',      # Start with a small number and increase it with every change you make
     author = 'Freire Alexander Palomino Palma',                   # Type in your name
     author_email = 'freirealexander0214@gmail.com',      # Type in your E-Mail
     license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
-    description = 'Easy customizable menu for CLI',   # Give a short description about your library
+    description = 'Easy and Simple kit for develop Text User Interfaces',   # Give a short description about your library
     long_description = long_description,
     long_description_content_type = "text/markdown",
     url = 'https://github.com/FreireAlexander/PyeMenu',   # Provide either the link to your github or to your website
-    download_url = 'https://github.com/FreireAlexander/PyeMenu/releases/tag/0.1.0',
+    download_url = 'https://github.com/FreireAlexander/PyeMenu/releases/tag/1.0.0',
     project_urls = {
         "Bug Tracker": "https://github.com/FreireAlexander/PyeMenu/issues",
     },
     #download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',    # I explain this later on
-    keywords = ['MENU', 'CLI', 'command line'],   # Keywords that define your package best
+    keywords = ['MENU', 'CLI', 'command line', 'TUI', 'Text User Interface'],   # Keywords that define your package best
     install_requires=[            # I get to this in a second
             'readchar',
         ],
