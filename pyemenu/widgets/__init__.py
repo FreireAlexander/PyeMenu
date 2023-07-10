@@ -1,6 +1,4 @@
 """
-    
-    PyeMenu version 1.0.0
     This Sub Package contain all wdigets elements for the
     Text User Interface PyeMenu has, these elements are:
     1. Menu -> For just one selection Menu
@@ -9,6 +7,8 @@
 
     This package was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
+    
+    PyeMenu version 1.0.0
 """
 from .menus import Menu
 from .checkboxlists import Checkboxlist

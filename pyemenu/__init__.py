@@ -1,6 +1,4 @@
 """
-    
-    PyeMenu version 1.0.0
     A simple framework for develop simple and really easy Text User Interface, 
     You can Count with this elements:
     1. Components. These are used inside the widgets, these are:
@@ -22,10 +20,12 @@
     
     This package was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
+
+    PyeMenu version 1.0.0
 """
 from .components import Text, Title, Checkbox, Entry, Button
 from .widgets import Menu, Checkboxlist, Form
-from .tools import clear_screen, getKeyboard, setCursor
+from .tools import clear_screen, getKeyboard
 from .colors import Colors
 
 

@@ -1,6 +1,4 @@
-import pyemenu
 from pyemenu import Colors, Title, Text, Menu, Checkboxlist, Form, Entry, Checkbox, Button
-from pyemenu import getKeyboard, setCursor, clear_screen
 from readchar import key
 
 

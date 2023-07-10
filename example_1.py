@@ -29,7 +29,7 @@ def main():
                 padding_bottom=True,
                 padding_up=True
                 )
-    print(f"\nel valor seleccionado fue: {menu.answer}")
+    print(f"\nThe selected value is: {menu.answer}")
 
 if __name__ == '__main__':
     main()

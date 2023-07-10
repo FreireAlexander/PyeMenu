@@ -1,13 +1,13 @@
 """
-    
-    PyeMenu version 1.0.0
     This module provide specific tools for generate menus
     this module contain the next functions:
     0. clear_screen  : Clean the screen
-    1. keyboard : read key pressed
+    1. getKeyboard : read key pressed
 
     This module was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
+
+    PyeMenu version 1.0.0
 """
 #Libraries
 import os
@@ -76,6 +76,9 @@ def setCursor(keyboard, pointer: int, options: list, wrap: int):
     return pointer
 
 def resize_screen(wrap, block_width):
+    """
+    This method is for resizing the screen when widgets are print or show
+    """
     cols, rows = get_terminal_size()
     while block_width*wrap>cols:
         wrap -=1       
@@ -85,6 +88,9 @@ def resize_screen(wrap, block_width):
 
 def print_title(widget, title_align, title_decorator, 
                 block_width, wrap, title_padding_up, title_padding_bottom):
+    """
+    This method is for print the title in widgets
+    """
     if widget.title.text != '':
         widget.title.print_title(title_align, title_decorator, 
                     (block_width)*wrap, 
@@ -92,6 +98,9 @@ def print_title(widget, title_align, title_decorator,
                     title_padding_bottom)
 
 def print_logo(logo):
+    """
+    This method is for print the logo above widgets
+    """
     if type(logo) in [type(Text("")), type(Title(""))]:
         print(f"{logo.styled}")
     elif str(logo):
@@ -100,8 +109,11 @@ def print_logo(logo):
     else:
         pass
 
-
 def fill_empty_blocks(self, empty_blocks, block_width):
+    """
+    This method is for fill empty spaces in widgets when it prints
+    """
     if empty_blocks != 0:
         for i in range(empty_blocks):
             print(f"{self.bg_rgb}{((block_width))*' '}", end='')
+

@@ -20,7 +20,7 @@ def main():
                     title_padding_up=True
                     )
     if question.answer == None:
-        print(f"\nDo you really like dogs?")
+        print(f"\nDo you really like dogs? ")
     elif len(question.answer)==1:
         print(f"\nMy Favorite Dog is {question.answer}")
     else:

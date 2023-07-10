@@ -20,7 +20,9 @@ class Checkbox(Text):
         underline: bool 
         blink: bool 
         reverse: bool 
-        crossed: bool 
+        crossed: bool
+        
+    PyeMenu version 1.0.0
     """
     def __init__(self, label: str, box: str=' ', 
                 fg: str = not_fg, bg: str = not_bg,

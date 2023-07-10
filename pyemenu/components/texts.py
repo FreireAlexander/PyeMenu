@@ -19,6 +19,8 @@ class Text():
         blink: bool 
         reverse: bool 
         crossed: bool 
+        
+        PyeMenu version 1.0.0
     """
     
     def __init__(self, text: str,

@@ -20,6 +20,8 @@ class Title(Text):
         blink: bool 
         reverse: bool 
         crossed: bool 
+        
+        PyeMenu version 1.0.0
     """
     def __init__(self, text: str,
                 fg: str = not_fg, bg: str = not_bg,
@@ -49,7 +51,7 @@ class Title(Text):
         new_line_up: bool = False -> add a new line above title
         new_line_bottom: bool = False -> add a new line behind title
         """
-        decorator = Text.setText(self, decorator)
+        decorator = Text.setText(self, oneChar(decorator))
         spaces = (width-self._lenght)  
         if type(decorator)==type(Text('')):
             if align == 'center':
@@ -101,4 +103,22 @@ class Title(Text):
                             blink=title.blink, reverse=title.reverse, crossed=title.crossed)
         
         return title
+    
+def oneChar(string):
+    """
+    This funtion is for validate just one length string in print titles and others
+    """
+    if type(string) == type(Text('')):
+        if string.lenght > 1:
+            string = Text(' ', string.fg, string.bg, string.bold,
+                            string.italic, string.underline, string.blink,
+                            string.reverse, string.crossed)
+            return string
+        else:
+            return string
+    if str(string):
+        if len(string)>1:
+            return ' '
+        else:
+            return string
 

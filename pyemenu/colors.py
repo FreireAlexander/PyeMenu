@@ -1,14 +1,11 @@
 """
-    
-    PyeMenu version 1.0.0
     This module contain the color value.
 
     This module was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
-"""
 
-# SGR color constants
-# rene-d 2018
+    PyeMenu version 1.0.0
+"""
 not_fg = '\x1b[39m'
 not_bg = '\x1b[49m'
 

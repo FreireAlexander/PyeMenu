@@ -5,6 +5,8 @@
 
     This module was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
+        
+    PyeMenu version 1.0.0
 """
 # Local
 from ..components import Text, Title
@@ -14,7 +16,6 @@ from ..tools import print_title, fill_empty_blocks, print_logo
 # External
 import math
 from readchar import key
-
 
 nf = '\x1b[0m'
 not_fg = '\x1b[39m'

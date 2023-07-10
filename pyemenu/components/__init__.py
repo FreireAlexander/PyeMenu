@@ -1,6 +1,4 @@
 """
-    
-    PyeMenu version 1.0.0
     This Sub Package contain all components for being used insides widgets
     for develop a Text User Interface with PyeMenu, these components are:
         1. Text
@@ -8,7 +6,8 @@
         3. Checkbox
         4. Entry
         5. Button
-
+    
+    PyeMenu version 1.0.0
     This package was developed by Freire Alexander Palomino Palma
     *Copyright (c) 2014-2023 Freire Alexander Palomino Palma*
 """

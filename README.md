@@ -6,7 +6,7 @@
 
 
 
-# Python - PyeMenu Version 1.0.0-DEV
+# Python - PyeMenu Version 1.0.0
 
 PyeMenu is a simple and interactive CLI menu for Python apps __'by now'__ It is intend in future to add more features including other types of menus as checkbox an similars. Right now, it is possible to customize the title and the cursor __'icon'__ 
 

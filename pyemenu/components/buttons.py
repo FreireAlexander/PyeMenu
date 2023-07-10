@@ -20,7 +20,9 @@ class Button(Text):
         underline: bool 
         blink: bool 
         reverse: bool 
-        crossed: bool 
+        crossed: bool
+        
+    PyeMenu version 1.0.0
     """
     def __init__(self, label: str,
                 fg: str = Colors.DimGray, bg: str = Colors.BlackOlive,
