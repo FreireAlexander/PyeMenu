@@ -13,7 +13,7 @@ setup(
     long_description = long_description,
     long_description_content_type = "text/markdown",
     url = 'https://github.com/FreireAlexander/PyeMenu',   # Provide either the link to your github or to your website
-    download_url = 'https://github.com/FreireAlexander/PyeMenu/releases/tag/1.0.1',
+    download_url = 'https://github.com/FreireAlexander/PyeMenu/releases/tag/1.0.2',
     project_urls = {
         "Bug Tracker": "https://github.com/FreireAlexander/PyeMenu/issues",
     },
