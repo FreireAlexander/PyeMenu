@@ -91,8 +91,7 @@ def print_title(widget, title_align, title_decorator,
     """
     This method is for print the title in widgets
     """
-    if widget.title.text != '':
-        widget.title.print_title(title_align, title_decorator, 
+    widget.title.print_title(title_align, title_decorator, 
                     (block_width)*wrap, 
                     title_padding_up, 
                     title_padding_bottom)

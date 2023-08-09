@@ -76,11 +76,11 @@ class Form():
         self.elements.extend(self.buttons)
         self.max_len_entry = max(self.elements, key = lambda x: x.lenght).lenght
         self.max_len_button = max(self.buttons, key = lambda x: x.lenght).lenght
-        title.width = self.max_len_entry
         self.max_len_values = max(self.entries, key = lambda x: x._len_value)._len_value
         self.answer = {entry.text:entry.value for entry in self.entries}
         self.cursor = Text.setText(self, cursor)
         self.title = Title.setTitle(self, title)
+        self.title.width = self.max_len_entry
         self.exit = False
         if buttons == ['clear', 'submit', 'exit']:
             self.buttons[0].onClick = lambda: clear_all(self.entries)

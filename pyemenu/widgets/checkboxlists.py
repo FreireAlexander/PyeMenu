@@ -47,7 +47,6 @@ class Checkboxlist():
         self.multiselect = multiselect
         __options = [option if type(option)==type(Text('')) else Checkbox(str(option)) for option in options]
         self.max_len_option = len(max(__options, key = lambda x: x.lenght).text)
-        title.width = self.max_len_option
         self.title = title
         self.cursor = cursor
         self.fg = fg
@@ -58,6 +57,7 @@ class Checkboxlist():
         self.cursor = Text.setText(self, cursor)
         self.title = Title.setTitle(self, title)
         self.options = self.setOptions(options)
+        self.title.width = self.max_len_option
         
     def print(self,
             wrap: int=1,

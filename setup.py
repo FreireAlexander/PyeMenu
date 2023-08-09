@@ -5,7 +5,7 @@ with open("README.md", "r", encoding= "utf-8") as fh:
 setup(
     name = 'pyemenu',         # How you named your package folder (MyLib)
     packages=find_packages(),
-    version = '1.0.1',      # Start with a small number and increase it with every change you make
+    version = '1.0.2',      # Start with a small number and increase it with every change you make
     author = 'Freire Alexander Palomino Palma',                   # Type in your name
     author_email = 'freirealexander0214@gmail.com',      # Type in your E-Mail
     license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository

@@ -6,7 +6,7 @@
 
 
 
-# Python - PyeMenu Version 1.0.1
+# Python - PyeMenu Version 1.0.2
 PyeMenu is a simple and really easy kit for developing Text User Interface apps in Python. It can be used to develop minimalist apps that run in terminal emulator.
 
 ### News

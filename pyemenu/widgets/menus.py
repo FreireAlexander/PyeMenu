@@ -44,7 +44,6 @@ class Menu():
                 fg: str = not_fg, bg: str = not_bg):
         self.options = [Text(str(option)) if type(option)!=type(Text('')) else option for option in options]
         self.max_len_option = max(self.options, key = lambda x: x.lenght).lenght
-        title.width = self.max_len_option
         self.title = title
         self.cursor = cursor
         self.fg = fg
@@ -54,6 +53,7 @@ class Menu():
         self.answer = Text('Vacio')
         self.cursor = Text.setText(self, cursor)
         self.title = Title.setTitle(self, title)
+        self.title.width = self.max_len_option
 
         self.options = []
         for option in options:
